@@ -1,5 +1,16 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
 public class Thonk {
     public static void main(String[] args) {
+        banner();
+        echo();
+
+        System.out.println("ok bye bye\n" );
+
+    }
+
+    public static void banner(){
         String logo ="""
                _____ _                 _
               |_   _| |__   ___  _ __ | | __
@@ -8,10 +19,18 @@ public class Thonk {
                 |_| |_| |_|\\___/|_| |_|_|\\_\\
               """;
         String divider = "_______________________________\n\n";
-
         System.out.println("Hello from\n" + logo + "what u want \n" + divider);
-
-        System.out.println("ok bye bye\n" +divider);
-
+    }
+    public static void echo(){
+        String divider = "_______________________________\n\n";
+        Scanner inp = new Scanner(System.in);
+        ArrayList<String> past_words = new ArrayList<String>();
+        while(!inp.hasNext("bye")){
+            past_words.add(inp.nextLine());
+            String outp= past_words.toString()
+                    .replace("[","")
+                    .replace("]","");
+            System.out.println("i also can " + outp + "\n" + divider);
+        }
     }
 }
