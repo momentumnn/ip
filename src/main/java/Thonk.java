@@ -9,5 +9,8 @@ public class Thonk {
               """;
 
         System.out.println("Hello from\n" + logo + "what u want \n");
+
+        System.out.println("ok bye bye");
+
     }
 }
