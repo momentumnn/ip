@@ -25,12 +25,31 @@ public class Thonk {
         String divider = "_______________________________\n\n";
         Scanner inp = new Scanner(System.in);
         ArrayList<String> past_words = new ArrayList<String>();
-        while(!inp.hasNext("bye")){
-            past_words.add(inp.nextLine());
-            String outp= past_words.toString()
-                    .replace("[","")
-                    .replace("]","");
-            System.out.println("i also can " + outp + "\n" + divider);
-        }
+        while(true){
+            String word = inp.nextLine();
+            switch(word){
+                case "bye":
+                    return;
+                case "list":
+                    list(past_words);
+                    break;
+                default:
+                    past_words.add(word);
+                    String outp= past_words.toString()
+                            .replace("[","")
+                            .replace("]","");
+                    System.out.println("i also can " + outp + "\n" + divider);
+
+            }}
+    }
+
+    public static void list(ArrayList<String> past_words){
+        int i =1;
+        for(String word: past_words)
+       {
+            System.out.println(i + ". " + word);
+            i++;
+        };
+        System.out.println("\n");
     }
 }
