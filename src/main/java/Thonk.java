@@ -24,32 +24,58 @@ public class Thonk {
     public static void echo(){
         String divider = "_______________________________\n\n";
         Scanner inp = new Scanner(System.in);
-        ArrayList<String> past_words = new ArrayList<String>();
+        ArrayList<Task> past_tasks = new ArrayList<>();
+        int task_complete = 0;
         while(true){
-            String word = inp.nextLine();
-            switch(word){
+            String task = inp.nextLine();
+            switch(task.split(" ")[0]){
                 case "bye":
                     return;
                 case "list":
-                    list(past_words);
+                    list(past_tasks);
                     break;
+                case "mark":
+                    task_complete =  Integer.parseInt(task.split(" ")[1]) - 1;
+                    if(task.split(" ").length >= 2){
+                        mark(task_complete, past_tasks, true);
+                    }
+                    break;
+                case "unmark":
+                    task_complete =  Integer.parseInt(task.split(" ")[1]) - 1;
+                    if(task.split(" ").length >= 2){
+                        mark(task_complete, past_tasks, false);
+                    }
+                    break;
+
                 default:
-                    past_words.add(word);
-                    String outp= past_words.toString()
-                            .replace("[","")
-                            .replace("]","");
-                    System.out.println("i also can " + outp + "\n" + divider);
+                    Task new_task = new Task(task);
+                    past_tasks.add(new_task);
+                    String output= past_tasks.toString();
+//                            .replace("[","")
+//                            .replace("]","");
+                    System.out.println("i also can " + output + "\n" + divider);
 
             }}
     }
 
-    public static void list(ArrayList<String> past_words){
+    public static void list(ArrayList<Task> past_tasks){
         int i =1;
-        for(String word: past_words)
-       {
-            System.out.println(i + ". " + word);
+        for(Task task: past_tasks)
+        {
+            System.out.println(i + ". " + task.toString());
             i++;
         };
         System.out.println("\n");
+    }
+
+    public static void mark(int task_complete, ArrayList<Task> past_tasks, boolean marked){
+        Task current = past_tasks.get(task_complete);
+        current.setDone(marked);
+        if(marked){
+            System.out.println("ok slay its done\n" + current.toString());
+        }else{
+            System.out.println("not marked\n" + current.toString());
+        }
+        System.out.println();
     }
 }
