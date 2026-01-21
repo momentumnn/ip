@@ -1,6 +1,8 @@
-asdf
-asdf
+todo asdf
+event event /from now /to tmr
+deadline deadline /by tmr
 list
 mark 1
 unmark 2
+list
 bye
