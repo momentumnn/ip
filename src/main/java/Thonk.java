@@ -2,27 +2,27 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Thonk {
-    public static void main(String[] args) {
-        banner();
-        echo();
-
-        System.out.println("ok bye bye\n" );
-
-    }
-
-    public static void banner(){
-        String logo ="""
+    public static String logo ="""
                _____ _                 _
               |_   _| |__   ___  _ __ | | __
                 | | | '_ \\ / _ \\| '_ \\| |/ /
                 | | | | | | (_) | | | |   <
                 |_| |_| |_|\\___/|_| |_|_|\\_\\
               """;
-        String divider = "_______________________________\n\n";
+    public static String divider = "_______________________________\n\n";
+
+
+    public static void main(String[] args) {
+        banner();
+        echo();
+
+        System.out.println("ok bye bye\n" );
+    }
+
+    public static void banner(){
         System.out.println("Hello from\n" + logo + "what u want \n" + divider);
     }
     public static void echo(){
-        String divider = "_______________________________\n\n";
         Scanner inp = new Scanner(System.in);
         ArrayList<Task> past_tasks = new ArrayList<>();
         int task_complete = 0;
