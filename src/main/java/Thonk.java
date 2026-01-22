@@ -26,40 +26,53 @@ public class Thonk {
     public static void echo(){
         Scanner inp = new Scanner(System.in);
         Task new_task;
-        while(true){
-            String task = inp.nextLine();
-            String[] task_split = task.split(" ",2);
-            String command = task_split[0];
-            String[] task_details;
-            System.out.println(command);
-            switch(command){
-            case "bye":
-                return;
-            case "list":
-                list(past_tasks);
-                break;
-            case "mark", "unmark":
-                Task current_task = past_tasks.get(Integer.parseInt(task.split(" ")[1])-1);
-                current_task.setDone(command.equals("mark"));
-                mark(current_task);
-                break;
-            case "todo":
-                new_task = new Todo(task_split[1]);
-                add(new_task);
-                break;
-            case "deadline":
-                task_details = task_split[1].split(" /by ");
-                new_task = new Deadline(task_details[0],task_details[1]);
-                add(new_task);
-                break;
-            case "event":
-                task_details = task_split[1].split(" /from | /to ");
-                new_task = new Event(task_details[0],task_details[1],task_details[2]);
-                add(new_task);
-                break;
-            default:
-                System.out.println("U entered something wong");
-            }}
+        while(true) {
+            try {
+                String task = inp.nextLine();
+                String[] task_split = task.split(" ", 2);
+                String command = task_split[0];
+                String[] task_details;
+                switch (command) {
+                case "bye":
+                    return;
+                case "list":
+                    list(past_tasks);
+                    break;
+                case "mark", "unmark":
+                    Task current_task = past_tasks.get(Integer.parseInt(task.split(" ")[1]) - 1);
+                    current_task.setDone(command.equals("mark"));
+                    mark(current_task);
+                    break;
+                case "todo":
+                    if (task_split.length == 1) {
+                        throw new ThonkException("todo");
+                    }
+                    new_task = new Todo(task_split[1]);
+                    add(new_task);
+                    break;
+                case "deadline":
+                    task_details = task_split[1].split(" /by ");
+                    if (task_details.length != 2) {
+                        throw new ThonkException("deaded");
+                    }
+                    new_task = new Deadline(task_details[0], task_details[1]);
+                    add(new_task);
+                    break;
+                case "event":
+                    task_details = task_split[1].split(" /from | /to ");
+                    if (task_details.length != 3) {
+                        throw new ThonkException("fuckedd");
+                    }
+                    new_task = new Event(task_details[0], task_details[1], task_details[2]);
+                    add(new_task);
+                    break;
+                default:
+                    throw new ThonkException("U entered something wong");
+                }
+            }catch (ThonkException e){
+                System.out.println("help" + e);
+            }
+        }
     }
 
     public static void list(ArrayList<Task> past_tasks){
