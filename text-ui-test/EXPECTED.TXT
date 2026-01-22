@@ -4,42 +4,34 @@ Hello from
   | | | '_ \ / _ \| '_ \| |/ /
   | | | | | | (_) | | | |   <
   |_| |_| |_|\___/|_| |_|_|\_\
-what u want
+what u want 
 _______________________________
 
 
-todo
-Noted with thanks,
+Noted with thanks, 
 added [T][ ] asdf to ur list
 Currently u have 1 of stuff
-event
-Noted with thanks,
+Noted with thanks, 
 added [E][ ] event (from: now to tmr) to ur list
 Currently u have 2 of stuff
-deadline
-Noted with thanks,
+Noted with thanks, 
 added [D][ ] deadline (by: tmr) to ur list
 Currently u have 3 of stuff
-list
 1. [T][ ] asdf
 2. [E][ ] event (from: now to tmr)
 3. [D][ ] deadline (by: tmr)
 
 
-mark
 ok slay its done
 [T][X] asdf
 
-unmark
 not marked
 [E][ ] event (from: now to tmr)
 
-list
 1. [T][X] asdf
 2. [E][ ] event (from: now to tmr)
 3. [D][ ] deadline (by: tmr)
 
 
-bye
 ok bye bye
 

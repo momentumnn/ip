@@ -28,7 +28,10 @@ public class Thonk {
         Task new_task;
         while(true) {
             try {
+                // full command
                 String task = inp.nextLine();
+                // stripped command, left with everything after command.
+                // e.g "deadline buy bread" into "buy bread"
                 String[] task_split = task.split(" ", 2);
                 String command = task_split[0];
                 String[] task_details;
@@ -39,9 +42,7 @@ public class Thonk {
                     list(past_tasks);
                     break;
                 case "mark", "unmark":
-                    Task current_task = past_tasks.get(Integer.parseInt(task.split(" ")[1]) - 1);
-                    current_task.setDone(command.equals("mark"));
-                    mark(current_task);
+                    mark(task);
                     break;
                 case "todo":
                     if (task_split.length == 1) {
@@ -52,8 +53,8 @@ public class Thonk {
                     break;
                 case "deadline":
                     task_details = task_split[1].split(" /by ");
-                    if (task_details.length != 2) {
-                        throw new ThonkException("deaded");
+                    if (task_details.length == 1) {
+                        throw new ThonkException("deadline");
                     }
                     new_task = new Deadline(task_details[0], task_details[1]);
                     add(new_task);
@@ -70,7 +71,7 @@ public class Thonk {
                     throw new ThonkException("U entered something wong");
                 }
             }catch (ThonkException e){
-                System.out.println("help" + e);
+                System.out.println(e);
             }
         }
     }
@@ -90,11 +91,22 @@ public class Thonk {
         System.out.println("Noted with thanks, \nadded " + task + " to ur list\nCurrently u have " + past_tasks.size() + " of stuff");
     }
 
-    public static void mark(Task task){
-        if(task.getDone()){
-            System.out.println("ok slay its done\n" + task);
+    public static void mark(String task){
+        int max = past_tasks.size();
+        String regex = "[1-" + max + "]";
+        String[] task_split = task.split(" ");
+        if(task_split.length==1 ){
+            throw new ThonkException("Include task number la wlao");
+        }
+        if(!task_split[1].matches(regex)){
+            throw new ThonkException("out of bounds");
+        }
+        Task current_task = past_tasks.get(Integer.parseInt(task.split(" ")[1]) - 1);
+        current_task.setDone(task_split[0].equals("mark"));
+        if(current_task.getDone()){
+            System.out.println("ok slay its done\n" + current_task);
         }else{
-            System.out.println("not marked\n" + task);
+            System.out.println("not marked\n" + current_task);
         }
         System.out.println();
     }
