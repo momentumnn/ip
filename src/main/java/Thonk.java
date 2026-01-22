@@ -11,6 +11,7 @@ public class Thonk {
               """;
     public static String divider = "_______________________________\n\n";
 
+    public static ArrayList<Task> past_tasks = new ArrayList<>();
 
     public static void main(String[] args) {
         banner();
@@ -24,7 +25,6 @@ public class Thonk {
     }
     public static void echo(){
         Scanner inp = new Scanner(System.in);
-        ArrayList<Task> past_tasks = new ArrayList<>();
         Task new_task;
         while(true){
             String task = inp.nextLine();
@@ -45,20 +45,17 @@ public class Thonk {
                 break;
             case "todo":
                 new_task = new Todo(task_split[1]);
-                past_tasks.add(new_task);
-                System.out.println("Noted with thanks, \nadded " + new_task + " to ur list\nCurrently u have " + past_tasks.size() + " of stuff");
+                add(new_task);
                 break;
             case "deadline":
                 task_details = task_split[1].split(" /by ");
                 new_task = new Deadline(task_details[0],task_details[1]);
-                past_tasks.add(new_task);
-                System.out.println("Noted with thanks, \nadded " + new_task + " to ur list\nCurrently u have " + past_tasks.size() + " of stuff");
+                add(new_task);
                 break;
             case "event":
                 task_details = task_split[1].split(" /from | /to ");
                 new_task = new Event(task_details[0],task_details[1],task_details[2]);
-                past_tasks.add(new_task);
-                System.out.println("Noted with thanks, \nadded " + new_task + " to ur list\nCurrently u have " + past_tasks.size() + " of stuff");
+                add(new_task);
                 break;
             default:
                 System.out.println("U entered something wong");
@@ -73,6 +70,11 @@ public class Thonk {
             i++;
         }
         System.out.println("\n");
+    }
+
+    public static void add(Task task){
+        past_tasks.add(task);
+        System.out.println("Noted with thanks, \nadded " + task + " to ur list\nCurrently u have " + past_tasks.size() + " of stuff");
     }
 
     public static void mark(Task task){
