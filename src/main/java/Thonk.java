@@ -33,25 +33,25 @@ public class Thonk {
                 // stripped command, left with everything after command.
                 // e.g "deadline buy bread" into "buy bread"
                 String[] task_split = task.split(" ", 2);
-                String command = task_split[0];
+                Command command = Command.valueOf(task_split[0].toUpperCase());
                 String[] task_details;
                 switch (command) {
-                case "bye":
+                case BYE:
                     return;
-                case "list":
-                    list(past_tasks);
+                case LIST:
+                    list();
                     break;
-                case "mark", "unmark":
+                case MARK, UNMARK:
                     mark(task);
                     break;
-                case "todo":
+                case TODO:
                     if (task_split.length == 1) {
                         throw new ThonkException("todo");
                     }
                     new_task = new Todo(task_split[1]);
                     add(new_task);
                     break;
-                case "deadline":
+                case DEADLINE:
                     task_details = task_split[1].split(" /by ");
                     if (task_details.length == 1) {
                         throw new ThonkException("deadline");
@@ -59,7 +59,7 @@ public class Thonk {
                     new_task = new Deadline(task_details[0], task_details[1]);
                     add(new_task);
                     break;
-                case "event":
+                case EVENT:
                     task_details = task_split[1].split(" /from | /to ");
                     if (task_details.length != 3) {
                         throw new IncompleteCommand(task_split[1]);
@@ -67,7 +67,7 @@ public class Thonk {
                     new_task = new Event(task_details[0], task_details[1], task_details[2]);
                     add(new_task);
                     break;
-                case "delete":
+                case DELETE:
                     delete(task);
                     break;
                 default:
