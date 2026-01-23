@@ -67,6 +67,9 @@ public class Thonk {
                     new_task = new Event(task_details[0], task_details[1], task_details[2]);
                     add(new_task);
                     break;
+                case "delete":
+                    delete(task);
+                    break;
                 default:
                     throw new ThonkException("U entered something wong");
                 }
@@ -89,6 +92,11 @@ public class Thonk {
     public static void add(Task task){
         past_tasks.add(task);
         System.out.println("Noted with thanks, \nadded " + task + " to ur list\nCurrently u have " + past_tasks.size() + " of stuff");
+    }
+
+    public static void delete(String task){
+        Task current_task = past_tasks.get(Integer.parseInt(task.split(" ")[1]) - 1);
+        past_tasks.remove(current_task);
     }
 
     public static void mark(String task){
