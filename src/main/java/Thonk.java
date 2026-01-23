@@ -62,7 +62,7 @@ public class Thonk {
                 case "event":
                     task_details = task_split[1].split(" /from | /to ");
                     if (task_details.length != 3) {
-                        throw new ThonkException("fuckedd");
+                        throw new IncompleteCommand(task_split[1]);
                     }
                     new_task = new Event(task_details[0], task_details[1], task_details[2]);
                     add(new_task);
@@ -73,13 +73,21 @@ public class Thonk {
                 default:
                     throw new ThonkException("U entered something wong");
                 }
+            }catch (IllegalArgumentException e){
+                System.out.println("Invalid command");
             }catch (ThonkException e){
-                System.out.println(e);
+                System.out.println(e.getMessage());
+            }catch (Exception e){
+                System.out.println(e.getMessage());
             }
         }
     }
 
-    public static void list(ArrayList<Task> past_tasks){
+    public static void list(){
+        if(past_tasks.isEmpty()){
+            System.out.println("There is nothing to do.");
+            return;
+        }
         int i =1;
         for(Task task: past_tasks)
         {
@@ -97,6 +105,7 @@ public class Thonk {
     public static void delete(String task){
         Task current_task = past_tasks.get(Integer.parseInt(task.split(" ")[1]) - 1);
         past_tasks.remove(current_task);
+        System.out.println("Noted with thanks, \nsay bye bye to  " + current_task + " from ur list\nCurrently u have " + past_tasks.size() + " of stuff");
     }
 
     public static void mark(String task){
