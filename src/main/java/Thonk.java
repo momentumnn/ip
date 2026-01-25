@@ -11,7 +11,7 @@ public class Thonk {
               """;
     public static String divider = "_______________________________\n\n";
 
-    public static ArrayList<Task> past_tasks = new ArrayList<>();
+    public static ArrayList<Task> pastTasks = new ArrayList<>();
 
     public static void main(String[] args) {
         banner();
@@ -24,17 +24,17 @@ public class Thonk {
         System.out.println("Hello from\n" + logo + "what u want \n" + divider);
     }
     public static void echo(){
-        Scanner inp = new Scanner(System.in);
-        Task new_task;
+        Scanner input = new Scanner(System.in);
+        Task newTask;
         while(true) {
             try {
                 // full command
-                String task = inp.nextLine();
+                String task = input.nextLine();
                 // stripped command, left with everything after command.
                 // e.g "deadline buy bread" into "buy bread"
-                String[] task_split = task.split(" ", 2);
-                Command command = Command.valueOf(task_split[0].toUpperCase());
-                String[] task_details;
+                String[] taskSplit = task.split(" ", 2);
+                Command command = Command.valueOf(taskSplit[0].toUpperCase());
+                String[] taskDetails;
                 switch (command) {
                 case BYE:
                     return;
@@ -45,27 +45,27 @@ public class Thonk {
                     mark(task);
                     break;
                 case TODO:
-                    if (task_split.length == 1) {
+                    if (taskSplit.length == 1) {
                         throw new ThonkException("todo");
                     }
-                    new_task = new Todo(task_split[1]);
-                    add(new_task);
+                    newTask = new Todo(taskSplit[1]);
+                    add(newTask);
                     break;
                 case DEADLINE:
-                    task_details = task_split[1].split(" /by ");
-                    if (task_details.length == 1) {
+                    taskDetails = taskSplit[1].split(" /by ");
+                    if (taskDetails.length == 1) {
                         throw new ThonkException("deadline");
                     }
-                    new_task = new Deadline(task_details[0], task_details[1]);
-                    add(new_task);
+                    newTask = new Deadline(taskDetails[0], taskDetails[1]);
+                    add(newTask);
                     break;
                 case EVENT:
-                    task_details = task_split[1].split(" /from | /to ");
-                    if (task_details.length != 3) {
-                        throw new IncompleteCommand(task_split[1]);
+                    taskDetails = taskSplit[1].split(" /from | /to ");
+                    if (taskDetails.length != 3) {
+                        throw new IncompleteCommand(taskSplit[1]);
                     }
-                    new_task = new Event(task_details[0], task_details[1], task_details[2]);
-                    add(new_task);
+                    newTask = new Event(taskDetails[0], taskDetails[1], taskDetails[2]);
+                    add(newTask);
                     break;
                 case DELETE:
                     delete(task);
@@ -77,19 +77,17 @@ public class Thonk {
                 System.out.println("Invalid command");
             }catch (ThonkException e){
                 System.out.println(e.getMessage());
-            }catch (Exception e){
-                System.out.println(e.getMessage());
             }
         }
     }
 
     public static void list(){
-        if(past_tasks.isEmpty()){
+        if(pastTasks.isEmpty()){
             System.out.println("There is nothing to do.");
             return;
         }
         int i =1;
-        for(Task task: past_tasks)
+        for(Task task: pastTasks)
         {
             System.out.println(i + ". " + task);
             i++;
@@ -98,32 +96,32 @@ public class Thonk {
     }
 
     public static void add(Task task){
-        past_tasks.add(task);
-        System.out.println("Noted with thanks, \nadded " + task + " to ur list\nCurrently u have " + past_tasks.size() + " of stuff");
+        pastTasks.add(task);
+        System.out.println("Noted with thanks, \nadded " + task + " to ur list\nCurrently u have " + pastTasks.size() + " of stuff");
     }
 
     public static void delete(String task){
-        Task current_task = past_tasks.get(Integer.parseInt(task.split(" ")[1]) - 1);
-        past_tasks.remove(current_task);
-        System.out.println("Noted with thanks, \nsay bye bye to  " + current_task + " from ur list\nCurrently u have " + past_tasks.size() + " of stuff");
+        Task currentTask = pastTasks.get(Integer.parseInt(task.split(" ")[1]) - 1);
+        pastTasks.remove(currentTask);
+        System.out.println("Noted with thanks, \nsay bye bye to  " + currentTask + " from ur list\nCurrently u have " + pastTasks.size() + " of stuff");
     }
 
     public static void mark(String task){
-        int max = past_tasks.size();
+        int max = pastTasks.size();
         String regex = "[1-" + max + "]";
-        String[] task_split = task.split(" ");
-        if(task_split.length==1 ){
+        String[] taskSplit = task.split(" ");
+        if(taskSplit.length==1 ){
             throw new ThonkException("Include task number la wlao");
         }
-        if(!task_split[1].matches(regex)){
+        if(!taskSplit[1].matches(regex)){
             throw new ThonkException("out of bounds");
         }
-        Task current_task = past_tasks.get(Integer.parseInt(task.split(" ")[1]) - 1);
-        current_task.setDone(task_split[0].equals("mark"));
-        if(current_task.getDone()){
-            System.out.println("ok slay its done\n" + current_task);
+        Task currentTask = pastTasks.get(Integer.parseInt(task.split(" ")[1]) - 1);
+        currentTask.setDone(taskSplit[0].equals("mark"));
+        if(currentTask.getDone()){
+            System.out.println("ok slay its done\n" + currentTask);
         }else{
-            System.out.println("not marked\n" + current_task);
+            System.out.println("not marked\n" + currentTask);
         }
         System.out.println();
     }

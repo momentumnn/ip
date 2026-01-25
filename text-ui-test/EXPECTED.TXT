@@ -28,6 +28,10 @@ ok slay its done
 Noted with thanks, 
 say bye bye to  [T][X] asdf from ur list
 Currently u have 2 of stuff
+1. [E][ ] event (from: now to tmr)
+2. [D][ ] deadline (by: tmr)
+
+
 not marked
 [D][ ] deadline (by: tmr)
 
