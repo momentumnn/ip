@@ -11,33 +11,37 @@ _______________________________
 Noted with thanks, 
 added [T][ ] asdf to ur list
 Currently u have 1 of stuff
-Noted with thanks, 
-added [E][ ] event (from: now to tmr) to ur list
-Currently u have 2 of stuff
-Noted with thanks, 
-added [D][ ] deadline (by: tmr) to ur list
-Currently u have 3 of stuff
-1. [T][ ] asdf
-2. [E][ ] event (from: now to tmr)
-3. [D][ ] deadline (by: tmr)
 
+Noted with thanks, 
+added [E][ ] event  (from:  now  to  tmr) to ur list
+Currently u have 2 of stuff
+
+Noted with thanks, 
+added [D][ ] deadline  (by:  tmr) to ur list
+Currently u have 3 of stuff
+
+1. [T][ ] asdf
+2. [E][ ] event  (from:  now  to  tmr)
+3. [D][ ] deadline  (by:  tmr)
 
 ok slay its done
 [T][X] asdf
 
+
 Noted with thanks, 
 say bye bye to  [T][X] asdf from ur list
-Currently u have 2 of stuff
-1. [E][ ] event (from: now to tmr)
-2. [D][ ] deadline (by: tmr)
+1. [E][ ] event  (from:  now  to  tmr)
+2. [D][ ] deadline  (by:  tmr)
 
+1. [E][ ] event  (from:  now  to  tmr)
+2. [D][ ] deadline  (by:  tmr)
 
 not marked
-[D][ ] deadline (by: tmr)
+[D][ ] deadline  (by:  tmr)
 
-1. [E][ ] event (from: now to tmr)
-2. [D][ ] deadline (by: tmr)
 
+1. [E][ ] event  (from:  now  to  tmr)
+2. [D][ ] deadline  (by:  tmr)
 
 ok bye bye
 

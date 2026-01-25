@@ -16,7 +16,6 @@ public class Thonk {
     public static void main(String[] args) {
         banner();
         echo();
-
         System.out.println("ok bye bye\n" );
     }
 
@@ -26,7 +25,7 @@ public class Thonk {
     public static void echo(){
         Scanner input = new Scanner(System.in);
         Task newTask;
-        while(true) {
+        while (true) {
             try {
                 // full command
                 String task = input.nextLine();
@@ -45,24 +44,24 @@ public class Thonk {
                     mark(task);
                     break;
                 case TODO:
-                    if (taskSplit.length == 1) {
-                        throw new ThonkException("todo");
+                    if (taskSplit.length == 1 || taskSplit[1].isBlank()){
+                        throw new IncompleteCommandException("todo");
                     }
                     newTask = new Todo(taskSplit[1]);
                     add(newTask);
                     break;
                 case DEADLINE:
-                    taskDetails = taskSplit[1].split(" /by ");
+                    taskDetails = taskSplit[1].split("/by");
                     if (taskDetails.length == 1) {
-                        throw new ThonkException("deadline");
+                        throw new IncompleteCommandException("deadline");
                     }
                     newTask = new Deadline(taskDetails[0], taskDetails[1]);
                     add(newTask);
                     break;
                 case EVENT:
-                    taskDetails = taskSplit[1].split(" /from | /to ");
+                    taskDetails = taskSplit[1].split("/from|/to");
                     if (taskDetails.length != 3) {
-                        throw new IncompleteCommand(taskSplit[1]);
+                        throw new IncompleteCommandException("event");
                     }
                     newTask = new Event(taskDetails[0], taskDetails[1], taskDetails[2]);
                     add(newTask);
@@ -78,42 +77,44 @@ public class Thonk {
             }catch (ThonkException e){
                 System.out.println(e.getMessage());
             }
+            System.out.println();
         }
     }
 
     public static void list(){
-        if(pastTasks.isEmpty()){
+        if (pastTasks.isEmpty()){
             System.out.println("There is nothing to do.");
             return;
         }
         int i =1;
-        for(Task task: pastTasks)
+        for (Task task: pastTasks)
         {
             System.out.println(i + ". " + task);
             i++;
         }
-        System.out.println("\n");
     }
 
     public static void add(Task task){
         pastTasks.add(task);
-        System.out.println("Noted with thanks, \nadded " + task + " to ur list\nCurrently u have " + pastTasks.size() + " of stuff");
+        System.out.println("Noted with thanks, \nadded " + task + " to ur list\nCurrently u have " + pastTasks.size()
+                + " of stuff");
     }
 
     public static void delete(String task){
         Task currentTask = pastTasks.get(Integer.parseInt(task.split(" ")[1]) - 1);
         pastTasks.remove(currentTask);
-        System.out.println("Noted with thanks, \nsay bye bye to  " + currentTask + " from ur list\nCurrently u have " + pastTasks.size() + " of stuff");
+        System.out.println("Noted with thanks, \nsay bye bye to  " + currentTask + " from ur list");
+        list();
     }
 
     public static void mark(String task){
         int max = pastTasks.size();
         String regex = "[1-" + max + "]";
         String[] taskSplit = task.split(" ");
-        if(taskSplit.length==1 ){
+        if (taskSplit.length == 1){
             throw new ThonkException("Include task number la wlao");
         }
-        if(!taskSplit[1].matches(regex)){
+        if (!taskSplit[1].matches(regex)){
             throw new ThonkException("out of bounds");
         }
         Task currentTask = pastTasks.get(Integer.parseInt(task.split(" ")[1]) - 1);
