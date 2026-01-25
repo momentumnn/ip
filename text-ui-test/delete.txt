@@ -1,0 +1,10 @@
+todo asdf
+event event /from now /to tmr
+deadline deadline /by tmr
+list
+mark 1
+delete 1
+list
+unmark 2
+list
+bye
