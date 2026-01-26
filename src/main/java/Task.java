@@ -19,7 +19,7 @@ public class Task {
         isDone = done;
     }
 
-    public boolean getDone(){
+    public boolean getDone() {
         return isDone;
     }
 

@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Thonk {
-    public static String logo ="""
+    public static String logo = """
                _____ _                 _
               |_   _| |__   ___  _ __ | | __
                 | | | '_ \\ / _ \\| '_ \\| |/ /
@@ -16,13 +16,13 @@ public class Thonk {
     public static void main(String[] args) {
         banner();
         echo();
-        System.out.println("ok bye bye\n" );
+        System.out.println("ok bye bye\n");
     }
 
-    public static void banner(){
+    public static void banner() {
         System.out.println("Hello from\n" + logo + "what u want \n" + divider);
     }
-    public static void echo(){
+    public static void echo() {
         Scanner input = new Scanner(System.in);
         Task newTask;
         while (true) {
@@ -44,7 +44,7 @@ public class Thonk {
                     mark(task);
                     break;
                 case TODO:
-                    if (taskSplit.length == 1 || taskSplit[1].isBlank()){
+                    if (taskSplit.length == 1 || taskSplit[1].isBlank()) {
                         throw new IncompleteCommandException("todo");
                     }
                     newTask = new Todo(taskSplit[1]);
@@ -72,56 +72,55 @@ public class Thonk {
                 default:
                     throw new ThonkException("U entered something wong");
                 }
-            }catch (IllegalArgumentException e){
+            } catch (IllegalArgumentException e) {
                 System.out.println("Invalid command");
-            }catch (ThonkException e){
+            } catch (ThonkException e) {
                 System.out.println(e.getMessage());
             }
             System.out.println();
         }
     }
 
-    public static void list(){
-        if (pastTasks.isEmpty()){
+    public static void list() {
+        if (pastTasks.isEmpty()) {
             System.out.println("There is nothing to do.");
             return;
         }
-        int i =1;
-        for (Task task: pastTasks)
-        {
+        int i = 1;
+        for (Task task: pastTasks) {
             System.out.println(i + ". " + task);
             i++;
         }
     }
 
-    public static void add(Task task){
+    public static void add(Task task) {
         pastTasks.add(task);
         System.out.println("Noted with thanks, \nadded " + task + " to ur list\nCurrently u have " + pastTasks.size()
                 + " of stuff");
     }
 
-    public static void delete(String task){
+    public static void delete(String task) {
         Task currentTask = pastTasks.get(Integer.parseInt(task.split(" ")[1]) - 1);
         pastTasks.remove(currentTask);
         System.out.println("Noted with thanks, \nsay bye bye to  " + currentTask + " from ur list");
         list();
     }
 
-    public static void mark(String task){
+    public static void mark(String task) {
         int max = pastTasks.size();
         String regex = "[1-" + max + "]";
         String[] taskSplit = task.split(" ");
-        if (taskSplit.length == 1){
+        if (taskSplit.length == 1) {
             throw new ThonkException("Include task number la wlao");
         }
-        if (!taskSplit[1].matches(regex)){
+        if (!taskSplit[1].matches(regex)) {
             throw new ThonkException("out of bounds");
         }
         Task currentTask = pastTasks.get(Integer.parseInt(task.split(" ")[1]) - 1);
         currentTask.setDone(taskSplit[0].equals("mark"));
-        if(currentTask.getDone()){
+        if (currentTask.getDone()) {
             System.out.println("ok slay its done\n" + currentTask);
-        }else{
+        } else {
             System.out.println("not marked\n" + currentTask);
         }
         System.out.println();
