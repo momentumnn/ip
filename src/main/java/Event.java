@@ -7,6 +7,11 @@ public class Event extends Task {
         this.startTime = startTime;
         this.endTime = endTime;
     }
+    public Event(String description, boolean isDone, String startTime, String endTime) {
+        super(description, isDone);
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
 
     @Override
     public String toString() {
