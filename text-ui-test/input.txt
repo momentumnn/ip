@@ -1,6 +1,7 @@
 todo asdf
 event event /from now /to tmr
-deadline deadline /by tmr
+deadline wrong deadline /by tmr
+deadline correct deadline /by 2022-12-20
 list
 mark 1
 delete 1
