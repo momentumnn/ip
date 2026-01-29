@@ -60,8 +60,12 @@ public class Thonk {
                     break;
                 case DEADLINE:
                     taskDetails = taskSplit[1].split("/by");
+                    String dateRegex = "(19|20)\\d{2}([/\\-])(0[1-9]|1[1,2]|[1-9])([/\\-])(0[1-9]|[12][0-9]|3[01])";
                     if (taskDetails.length == 1) {
                         throw new IncompleteCommandException("deadline");
+                    }
+                    if (!taskDetails[1].trim().matches(dateRegex)) {
+                        throw new ThonkException("Please make sure it is in YYYY-MM-DD format");
                     }
                     newTask = new Deadline(taskDetails[0], taskDetails[1]);
                     add(newTask);
