@@ -27,12 +27,12 @@ public class Thonk {
         Task newTask;
         Storage storage;
         try {
+            System.out.print("file found! parsing file now!");
             storage = new Storage("data/thonk.txt");
+            pastTasks = storage.load();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("No file found!");
         }
-        System.out.print(storage);
-        pastTasks = storage.load();
         while (true) {
             try {
                 // full command
@@ -82,7 +82,7 @@ public class Thonk {
                 }
             } catch (IllegalArgumentException e) {
                 System.out.println("Invalid command");
-            } catch (ThonkException | IncompleteCommandException e) {
+            } catch (ThonkException e) {
                 System.out.println(e.getMessage());
             }
 
