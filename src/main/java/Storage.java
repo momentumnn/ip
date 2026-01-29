@@ -26,10 +26,8 @@ public class Storage {
             Scanner scanner = new Scanner(file);
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
-                try {
+                if (parseTask(line) != null) {
                     tasks.add(parseTask(line));
-                } catch (Exception e) {
-                    System.out.println("Warning: Skipping corrupted line: " + line);
                 }
             }
         } catch (FileNotFoundException e) {
