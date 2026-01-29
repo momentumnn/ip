@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class Thonk {
     private static ArrayList<Task> pastTasks = new ArrayList<>();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         banner();
         echo();
         System.out.println("ok bye bye\n");
@@ -22,16 +22,17 @@ public class Thonk {
                 """;
         System.out.println("Hello from\n" + logo + "what u want \n" + divider);
     }
-    public static void echo() {
+    public static void echo() throws IOException {
         Scanner input = new Scanner(System.in);
         Task newTask;
         Storage storage;
         try {
-            storage = new Storage("data/thonk.txt");
+            storage = new Storage("thonk.txt");
             System.out.print("file found! parsing file now!");
             pastTasks = storage.load();
         } catch (IOException e) {
-            System.out.println("No file found!");
+            System.out.println("No file found!\nCreating one for u at data/thonk.txt");
+            storage = new Storage("thonk.txt");
         }
         while (true) {
             try {
