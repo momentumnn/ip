@@ -1,8 +1,10 @@
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Deadline extends Task {
+    private static final String dateFormat = "dd/MM/yyyy";
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateFormat);
     protected LocalDate by;
-
     public Deadline(String description, String by) {
         super(description);
         this.by = stringToDate(by);
@@ -17,6 +19,6 @@ public class Deadline extends Task {
 
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (by: " + by + ")";
+        return "[D]" + super.toString() + " (by: " + by.format(formatter) + ")";
     }
 }
