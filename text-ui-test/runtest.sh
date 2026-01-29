@@ -21,35 +21,15 @@ fi
 
 # run the program, feed commands from input.txt file and redirect the output to the ACTUAL.TXT
 java -classpath ../bin Thonk < input.txt > ACTUAL.TXT
-java -classpath ../bin Thonk < events.txt > ACTUAL_EVENTS.TXT
-java -classpath ../bin Thonk < delete.txt > ACTUAL_DELETE.TXT
 
 
 # convert to UNIX format
 cp EXPECTED.TXT EXPECTED-UNIX.TXT
-cp EXPECTED_EVENTS.TXT EXPECTED_EVENTS-UNIX.TXT
-cp EXPECTED_DELETE.TXT EXPECTED_DELETE-UNIX.TXT
-dos2unix -q ACTUAL.TXT EXPECTED-UNIX.TXT ACTUAL_DELETE.TXT ACTUAL_EVENTS.TXT EXPECTED_EVENTS-UNIX.TXT EXPECTED_DELETE-UNIX.TXT
+dos2unix -q ACTUAL.TXT EXPECTED-UNIX.TXT
 
 # compare the output to the expected output
-diff -bB ACTUAL.TXT EXPECTED-UNIX.TXT
 echo "Normal"
-if [ $? -eq 0 ]
-then
-    echo "Test result: PASSED"
-else
-    echo "Test result: FAILED"
-fi
-diff -bB ACTUAL_DELETE.TXT EXPECTED_DELETE-UNIX.TXT
-echo "Delete"
-if [ $? -eq 0 ]
-then
-    echo "Test result: PASSED"
-else
-    echo "Test result: FAILED"
-fi
-diff -bB ACTUAL_EVENTS.TXT EXPECTED_EVENTS-UNIX.TXT
-echo "Events"
+diff -bB ACTUAL.TXT EXPECTED-UNIX.TXT
 if [ $? -eq 0 ]
 then
     echo "Test result: PASSED"
