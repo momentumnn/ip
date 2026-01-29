@@ -27,8 +27,8 @@ public class Thonk {
         Task newTask;
         Storage storage;
         try {
-            System.out.print("file found! parsing file now!");
             storage = new Storage("data/thonk.txt");
+            System.out.print("file found! parsing file now!");
             pastTasks = storage.load();
         } catch (IOException e) {
             System.out.println("No file found!");
