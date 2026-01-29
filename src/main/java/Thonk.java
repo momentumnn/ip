@@ -4,28 +4,23 @@ import java.util.Scanner;
 
 public class Thonk {
     private static ArrayList<Task> pastTasks = new ArrayList<>();
+    private Storage storage;
+    private UI ui;
+
 
     public static void main(String[] args) throws IOException {
-        banner();
+        new Thonk().run();
+    }
+    public void run() throws IOException {
+        ui = new UI();
+        ui.banner();
         echo();
         System.out.println("ok bye bye\n");
     }
 
-    public static void banner() {
-        String divider = "_______________________________\n\n";
-        String logo = """
-                 _____ _                 _
-                |_   _| |__   ___  _ __ | | __
-                  | | | '_ \\ / _ \\| '_ \\| |/ /
-                  | | | | | | (_) | | | |   <
-                  |_| |_| |_|\\___/|_| |_|_|\\_\\
-                """;
-        System.out.println("Hello from\n" + logo + "what u want \n" + divider);
-    }
-    public static void echo() throws IOException {
+    public void echo() throws IOException {
         Scanner input = new Scanner(System.in);
         Task newTask;
-        Storage storage;
         try {
             storage = new Storage("thonk.txt");
             System.out.print("file found! parsing file now!");
@@ -47,7 +42,7 @@ public class Thonk {
                 case BYE:
                     return;
                 case LIST:
-                    list();
+                    ui.list(pastTasks);
                     break;
                 case MARK, UNMARK:
                     mark(task);
@@ -95,17 +90,6 @@ public class Thonk {
         }
     }
 
-    public static void list() {
-        if (pastTasks.isEmpty()) {
-            System.out.println("There is nothing to do.");
-            return;
-        }
-        int i = 1;
-        for (Task task: pastTasks) {
-            System.out.println(i + ". " + task);
-            i++;
-        }
-    }
 
     public static void add(Task task) {
         pastTasks.add(task);
@@ -113,11 +97,11 @@ public class Thonk {
                 + " of stuff");
     }
 
-    public static void delete(String task) {
+    public void delete(String task) {
         Task currentTask = pastTasks.get(Integer.parseInt(task.split(" ")[1]) - 1);
         pastTasks.remove(currentTask);
         System.out.println("Noted with thanks, \nsay bye bye to  " + currentTask + " from ur list");
-        list();
+        ui.list(pastTasks);
     }
 
     public static void mark(String task) {
