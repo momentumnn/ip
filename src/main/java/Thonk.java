@@ -89,7 +89,7 @@ public class Thonk {
             } catch (ThonkException e) {
                 System.out.println(e.getMessage());
             }
-
+            storage.save(pastTasks);
             System.out.println();
         }
     }

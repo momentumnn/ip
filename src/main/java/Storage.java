@@ -1,8 +1,10 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -35,7 +37,22 @@ public class Storage {
         }
         return tasks;
     }
+    public void save(ArrayList<Task> tasks) throws IOException {
+        try {
+            FileWriter file = new FileWriter(path);
+            tasks.forEach(task -> {
+                try {
+                    file.write(task.toSave() + "\n");
 
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            file.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
     private Task parseTask(String line) throws IndexOutOfBoundsException {
         try {
             String[] parts = line.split(";");
@@ -55,10 +72,11 @@ public class Storage {
     }
     private String stringToPath(String string) throws IOException {
         String home = System.getProperty("user.dir");
-        java.nio.file.Path path = java.nio.file.Paths.get(home, string);
-        boolean directoryExists = java.nio.file.Files.exists(path);
+        Path path = Paths.get(home, string);
+        boolean directoryExists = Files.exists(path);
         if (!directoryExists) {
-            throw new IOException("File not found: " + path);
+            System.out.println("Directory does not exist!");
+            Files.createFile(path);
         }
         return path.toString();
     }
