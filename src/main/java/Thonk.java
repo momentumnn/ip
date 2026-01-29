@@ -1,17 +1,9 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Thonk {
-    public static String logo = """
-               _____ _                 _
-              |_   _| |__   ___  _ __ | | __
-                | | | '_ \\ / _ \\| '_ \\| |/ /
-                | | | | | | (_) | | | |   <
-                |_| |_| |_|\\___/|_| |_|_|\\_\\
-              """;
-    public static String divider = "_______________________________\n\n";
-
-    public static ArrayList<Task> pastTasks = new ArrayList<>();
+    private static ArrayList<Task> pastTasks = new ArrayList<>();
 
     public static void main(String[] args) {
         banner();
@@ -20,11 +12,27 @@ public class Thonk {
     }
 
     public static void banner() {
+        String divider = "_______________________________\n\n";
+        String logo = """
+                 _____ _                 _
+                |_   _| |__   ___  _ __ | | __
+                  | | | '_ \\ / _ \\| '_ \\| |/ /
+                  | | | | | | (_) | | | |   <
+                  |_| |_| |_|\\___/|_| |_|_|\\_\\
+                """;
         System.out.println("Hello from\n" + logo + "what u want \n" + divider);
     }
     public static void echo() {
         Scanner input = new Scanner(System.in);
         Task newTask;
+        Storage storage;
+        try {
+            storage = new Storage("data/thonk.txt");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.print(storage);
+        pastTasks = storage.load();
         while (true) {
             try {
                 // full command
@@ -74,9 +82,10 @@ public class Thonk {
                 }
             } catch (IllegalArgumentException e) {
                 System.out.println("Invalid command");
-            } catch (ThonkException e) {
+            } catch (ThonkException | IncompleteCommandException e) {
                 System.out.println(e.getMessage());
             }
+
             System.out.println();
         }
     }
