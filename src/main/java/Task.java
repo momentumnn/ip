@@ -10,11 +10,12 @@ public abstract class Task {
         this.description = description;
         this.isDone = isDone;
     }
+    public abstract String toSave();
 
     public String getStatusIcon() {
         return (isDone ? "X" : " "); // mark done task with X
     }
-
+    @Override
     public String toString() {
         return "[" + this.getStatusIcon() + "] " + this.description;
     }
@@ -26,5 +27,4 @@ public abstract class Task {
     public boolean getDone() {
         return isDone;
     }
-    public abstract String toSave();
 }
