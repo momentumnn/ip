@@ -8,19 +8,18 @@ what u want
 _______________________________
 
 
-No file found!
 Noted with thanks, 
-added [T][ ] asdf to ur list
+added asdf to ur list
 Currently u have 1 of stuff
 
 Noted with thanks, 
-added [E][ ] event  (from:  now  to  tmr) to ur list
+added event  to ur list
 Currently u have 2 of stuff
 
 Please make sure it is in YYYY-MM-DD format
 
 Noted with thanks, 
-added [D][ ] correct deadline  (by: 20/12/2022) to ur list
+added correct deadline  to ur list
 Currently u have 3 of stuff
 
 1. [T][ ] asdf
@@ -32,7 +31,7 @@ ok slay its done
 
 
 Noted with thanks, 
-say bye bye to  [T][X] asdf from ur list
+say bye bye to asdf from ur list
 1. [E][ ] event  (from:  now  to  tmr)
 2. [D][ ] correct deadline  (by: 20/12/2022)
 
@@ -46,5 +45,4 @@ not marked
 1. [E][ ] event  (from:  now  to  tmr)
 2. [D][ ] correct deadline  (by: 20/12/2022)
 
-ok bye bye
-
+Good bye
