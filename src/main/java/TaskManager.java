@@ -21,9 +21,8 @@ public class TaskManager {
         storage.save(tasks);
     }
 
-    public void delete(String taskString) {
-        Task currentTask = this.tasks.get(Integer.parseInt(taskString.split(" ")[1]) - 1);
-        tasks.remove(currentTask);
+    public void delete(Task task) {
+        tasks.remove(task);
         storage.save(tasks);
     }
 }

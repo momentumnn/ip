@@ -3,32 +3,34 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Thonk {
-    private static ArrayList<Task> pastTasks = new ArrayList<>();
-    private Storage storage;
+    private TaskManager taskManager;
     private UI ui;
 
 
     public static void main(String[] args) throws IOException {
-        new Thonk().run();
+        new Thonk().run(args);
     }
-    public void run() throws IOException {
-        ui = new UI();
-        ui.banner();
+    public void run(String[] args) throws IOException {
+        start(args);
         echo();
-        System.out.println("ok bye bye\n");
+        ui.goodbye();
+    }
+
+    private void start(String[] args) {
+        ui = new UI();
+        taskManager = initTaskManager(args);
+        ui.banner();
+    }
+
+    private TaskManager initTaskManager(String[] args) {
+        boolean isStorageFileSpecifiedByUser = args.length > 0;
+        return isStorageFileSpecifiedByUser ? new TaskManager(args[0]) : new TaskManager();
     }
 
     public void echo() throws IOException {
         Scanner input = new Scanner(System.in);
         Task newTask;
-        try {
-            storage = new Storage("thonk.txt");
-            System.out.print("file found! parsing file now!");
-            pastTasks = storage.load();
-        } catch (IOException e) {
-            System.out.println("No file found!\nCreating one for u at data/thonk.txt");
-            storage = new Storage("thonk.txt");
-        }
+
         while (true) {
             try {
                 // full command
@@ -42,7 +44,7 @@ public class Thonk {
                 case BYE:
                     return;
                 case LIST:
-                    ui.list(pastTasks);
+                    ui.list(taskManager.getTasks());
                     break;
                 case MARK, UNMARK:
                     mark(task);
@@ -75,7 +77,8 @@ public class Thonk {
                     add(newTask);
                     break;
                 case DELETE:
-                    delete(task);
+                    newTask = taskManager.getTasks().get(Integer.parseInt(task.split(" ")[1]) - 1);
+                    delete(newTask);
                     break;
                 default:
                     throw new ThonkException("U entered something wong");
@@ -85,26 +88,25 @@ public class Thonk {
             } catch (ThonkException e) {
                 System.out.println(e.getMessage());
             }
-            storage.save(pastTasks);
             System.out.println();
         }
     }
 
 
-    public static void add(Task task) {
-        pastTasks.add(task);
-        System.out.println("Noted with thanks, \nadded " + task + " to ur list\nCurrently u have " + pastTasks.size()
-                + " of stuff");
+    public void add(Task task) {
+        taskManager.add(task);
+        ui.add(task, taskManager.getTasks());
     }
 
-    public void delete(String task) {
-        Task currentTask = pastTasks.get(Integer.parseInt(task.split(" ")[1]) - 1);
-        pastTasks.remove(currentTask);
-        System.out.println("Noted with thanks, \nsay bye bye to  " + currentTask + " from ur list");
-        ui.list(pastTasks);
+    public void delete(Task task) {
+
+        taskManager.delete(task);
+        ui.delete(task);
+        ui.list(taskManager.getTasks());
     }
 
-    public static void mark(String task) {
+    public void mark(String task) {
+        ArrayList<Task> pastTasks = taskManager.getTasks();
         int max = pastTasks.size();
         String regex = "[1-" + max + "]";
         String[] taskSplit = task.split(" ");

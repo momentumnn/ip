@@ -41,10 +41,10 @@ public class UI {
         out.println("Good bye");
     }
     public void add(Task task, ArrayList<Task> pastTasks) {
-        out.println("Noted with thanks, \nadded " + task + " to ur list\nCurrently u have " + pastTasks.size()
+        out.println("Noted with thanks, \nadded " + task.getDescription() + " to ur list\nCurrently u have " + pastTasks.size()
                 + " of stuff");
     }
     public void delete(Task task) {
-        out.println("Noted with thanks, \nsay bye bye to  " + task + " from ur list");
+        out.println("Noted with thanks, \nsay bye bye to " + task.getDescription() + " from ur list");
     }
 }

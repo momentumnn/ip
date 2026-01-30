@@ -12,9 +12,18 @@ import java.util.stream.Stream;
 
 public class Storage {
     private final String path;
+    private static final String DEFAULT_STORAGE_PATH = "thonk.txt";
 
-    Storage(String path) throws IOException {
+    Storage(String path) {
         this.path = stringToPath(path);
+    }
+    Storage() {
+        this(DEFAULT_STORAGE_PATH);
+    }
+    private void createStoragePath(String string) {
+        String home = System.getProperty("user.dir");
+        Path path = Paths.get(home, string);
+
     }
     // Load data from disk
     public ArrayList<Task> load() {
@@ -37,13 +46,12 @@ public class Storage {
         }
         return tasks;
     }
-    public void save(ArrayList<Task> tasks) throws IOException {
+    public void save(ArrayList<Task> tasks)  {
         try {
             FileWriter file = new FileWriter(path);
             tasks.forEach(task -> {
                 try {
                     file.write(task.toSave() + "\n");
-
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -70,13 +78,17 @@ public class Storage {
         }
         return null;
     }
-    private String stringToPath(String string) throws IOException {
+    private String stringToPath(String string){
         String home = System.getProperty("user.dir");
         Path path = Paths.get(home, string);
         boolean directoryExists = Files.exists(path);
         if (!directoryExists) {
             System.out.println("Directory does not exist!");
-            Files.createFile(path);
+            try {
+                Files.createFile(path);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
         return path.toString();
     }
