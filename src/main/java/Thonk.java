@@ -26,11 +26,8 @@ public class Thonk {
     public void echo() {
         while (true) {
             try {
-                // full command
                 String input = ui.getNextLine();
                 Pair<Command, Task> output = Parser.parse(input, taskManager);
-                // stripped command, left with everything after command.
-                // e.g "deadline buy bread" into "buy bread"
                 String[] taskSplit = input.split(" ", 2);
                 Task task = output.u();
                 Command command = output.t();
@@ -44,16 +41,7 @@ public class Thonk {
                     taskManager.mark(task, command.equals(Command.MARK));
                     ui.mark(task);
                     break;
-                case TODO:
-                    if (taskSplit.length == 1 || taskSplit[1].isBlank()) {
-                        throw new IncompleteCommandException("todo");
-                    }
-                    add(task);
-                    break;
-                case DEADLINE:
-                    add(task);
-                    break;
-                case EVENT:
+                case TODO, DEADLINE, EVENT:
                     add(task);
                     break;
                 case DELETE:
