@@ -28,13 +28,11 @@ public class Thonk {
     }
 
     public void echo() throws IOException {
-        Scanner input = new Scanner(System.in);
         Task newTask;
-
         while (true) {
             try {
                 // full command
-                String task = input.nextLine();
+                String task = ui.getNextLine();
                 // stripped command, left with everything after command.
                 // e.g "deadline buy bread" into "buy bread"
                 String[] taskSplit = task.split(" ", 2);
@@ -77,19 +75,22 @@ public class Thonk {
                     add(newTask);
                     break;
                 case DELETE:
-                    newTask = taskManager.getTasks().get(Integer.parseInt(task.split(" ")[1]) - 1);
+                    String taskIndex = task.split(" ")[1];
+                    newTask = getTask(taskIndex);
                     delete(newTask);
                     break;
                 default:
                     throw new ThonkException("U entered something wong");
                 }
             } catch (IllegalArgumentException e) {
-                System.out.println("Invalid command");
+                ui.print("Invalid command");
             } catch (ThonkException e) {
-                System.out.println(e.getMessage());
+                ui.print(e.getMessage());
             }
-            System.out.println();
         }
+    }
+    private Task getTask(String index) {
+        return taskManager.getTasks().get(Integer.parseInt(index) - 1);
     }
 
 
@@ -99,7 +100,6 @@ public class Thonk {
     }
 
     public void delete(Task task) {
-
         taskManager.delete(task);
         ui.delete(task);
         ui.list(taskManager.getTasks());
