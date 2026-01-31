@@ -15,6 +15,12 @@ public class UI {
         this.in = new Scanner(in);
         this.out = out;
     }
+    public String getNextLine() {
+        return in.nextLine();
+    }
+    public void print(String text) {
+        out.println(text);
+    }
     public void banner() {
         String divider = "_______________________________\n\n";
         String logo = """
@@ -40,11 +46,18 @@ public class UI {
     public void goodbye() {
         out.println("Good bye");
     }
-    public void add(Task task, ArrayList<Task> pastTasks) {
-        out.println("Noted with thanks, \nadded " + task.getDescription() + " to ur list\nCurrently u have " + pastTasks.size()
+    public void add(Task task, int size) {
+        out.println("Noted with thanks, \nadded " + task.getDescription() + " to ur list\nCurrently u have " + size
                 + " of stuff");
     }
     public void delete(Task task) {
         out.println("Noted with thanks, \nsay bye bye to " + task.getDescription() + " from ur list");
+    }
+    public void mark(Task task) {
+        if (task.getDone()) {
+            out.println("ok slay its done\n" + task);
+        } else {
+            out.println("not marked\n" + task);
+        }
     }
 }
