@@ -1,3 +1,10 @@
+package thonk.core;
+
+import thonk.Command;
+import thonk.Pair;
+import thonk.Task;
+import thonk.ThonkException;
+
 public class Thonk {
     private TaskManager taskManager;
     private UI ui;
@@ -28,7 +35,6 @@ public class Thonk {
             try {
                 String input = ui.getNextLine();
                 Pair<Command, Task> output = Parser.parse(input, taskManager);
-                String[] taskSplit = input.split(" ", 2);
                 Task task = output.u();
                 Command command = output.t();
                 switch (command) {

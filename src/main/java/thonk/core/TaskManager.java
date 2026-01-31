@@ -1,5 +1,10 @@
+package thonk.core;
+
 import java.util.ArrayList;
 import java.util.stream.IntStream;
+
+import thonk.Storage;
+import thonk.Task;
 
 public class TaskManager {
     private final Storage storage;
