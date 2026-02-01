@@ -8,6 +8,6 @@ public class DeadlineTest {
     @Test
     public void testRegex() {
         Deadline deadline = new Deadline("test", "2025-12-31");
-        assertEquals(true, deadline.)
+        assertEquals("[D][ ] test (by: 31/12/2025)", deadline.toString());
     }
 }
