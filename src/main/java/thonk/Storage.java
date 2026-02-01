@@ -1,3 +1,5 @@
+package thonk;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -11,19 +13,14 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Storage {
-    private final String path;
     private static final String DEFAULT_STORAGE_PATH = "thonk.txt";
+    private final String path;
 
-    Storage(String path) {
+    public Storage(String path) {
         this.path = stringToPath(path);
     }
-    Storage() {
+    public Storage() {
         this(DEFAULT_STORAGE_PATH);
-    }
-    private void createStoragePath(String string) {
-        String home = System.getProperty("user.dir");
-        Path path = Paths.get(home, string);
-
     }
     // Load data from disk
     public ArrayList<Task> load() {
@@ -46,7 +43,7 @@ public class Storage {
         }
         return tasks;
     }
-    public void save(ArrayList<Task> tasks)  {
+    public void save(ArrayList<Task> tasks) {
         try {
             FileWriter file = new FileWriter(path);
             tasks.forEach(task -> {
@@ -78,7 +75,7 @@ public class Storage {
         }
         return null;
     }
-    private String stringToPath(String string){
+    private String stringToPath(String string) {
         String home = System.getProperty("user.dir");
         Path path = Paths.get(home, string);
         boolean directoryExists = Files.exists(path);

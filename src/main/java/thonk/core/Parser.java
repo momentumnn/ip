@@ -1,5 +1,16 @@
+package thonk.core;
+
+import thonk.Command;
+import thonk.Deadline;
+import thonk.Event;
+import thonk.IncompleteCommandException;
+import thonk.Pair;
+import thonk.Task;
+import thonk.ThonkException;
+import thonk.Todo;
+
 public interface Parser {
-    String DATE_REGEX = "(19|20)\\d{2}([/\\-])(0[1-9]|1[1,2]|[1-9])([/\\-])(0[1-9]|[12][0-9]|3[01])";
+    String DATE_REGEX = "(19|20)\\d{2}([/\\-])(0[1-9]|1[0-2]|[1-9])([/\\-])(0[1-9]|[12][0-9]|3[01])";
 
     static Pair<Command, Task> parse(String input, TaskManager tm) {
         String[] taskSplit = input.split(" ", 2);

@@ -1,7 +1,9 @@
+package thonk;
+
 public enum Command {
     TODO("todo", new String[] {"todo"}),
-    DEADLINE("Deadline", new String[] {"deadline", "/by"}),
-    EVENT("Event", new String[] {"event", "/from", "/to"}),
+    DEADLINE("Thonk.Deadline", new String[] {"deadline", "/by"}),
+    EVENT("Thonk.Event", new String[] {"event", "/from", "/to"}),
     MARK("Mark", new String[] {"mark"}),
     UNMARK("Unmark", new String[] {"unmark"}),
     LIST("List", new String[] {"list"}),
@@ -13,7 +15,7 @@ public enum Command {
     Command(String description, String[] keywords) {
         this.keywords = keywords;
     }
-    //public abstract void run(TaskManager tm);
+    //public abstract void run(Thonk.core.TaskManager tm);
     //convert string to command
     public static Command fromString(String input) {
         if (input == null || input.isBlank()) {

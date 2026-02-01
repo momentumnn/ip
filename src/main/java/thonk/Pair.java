@@ -1,3 +1,5 @@
+package thonk;
+
 public class Pair<T, U> {
     private final T t;
     private final U u;
@@ -7,11 +9,11 @@ public class Pair<T, U> {
         this.u = u;
     }
 
-    T t() {
+    public T t() {
         return this.t;
     }
 
-    U u() {
+    public U u() {
         return this.u;
     }
 
