@@ -62,7 +62,7 @@ public interface Parser {
             }
             task = tm.getTasks().get(Integer.parseInt(input.split(" ")[1]) - 1);
             break;
-        case LIST, BYE, UNKNOWN:
+        case LIST, BYE, FIND, UNKNOWN:
             break;
         default:
             break;
