@@ -5,6 +5,11 @@ import thonk.Pair;
 import thonk.Task;
 import thonk.ThonkException;
 
+/**
+ * The main driver class for the Thonk application
+ * Thonk is a CLI-based task management tool, that allows users to track todos,
+ * deadlines, and events through a simple text interface
+ */
 public class Thonk {
     private TaskManager taskManager;
     private UI ui;
@@ -13,6 +18,11 @@ public class Thonk {
     public static void main(String[] args) {
         new Thonk().run(args);
     }
+
+    /**
+     * Instantiate the full thonk program.
+     * @param args takes in file names from user input.
+     */
     public void run(String[] args) {
         start(args);
         echo();
@@ -30,7 +40,7 @@ public class Thonk {
         return isStorageFileSpecifiedByUser ? new TaskManager(args[0]) : new TaskManager();
     }
 
-    public void echo() {
+    private void echo() {
         while (true) {
             try {
                 String input = ui.getNextLine();
@@ -63,12 +73,12 @@ public class Thonk {
             }
         }
     }
-    public void add(Task task) {
+    private void add(Task task) {
         taskManager.add(task);
         ui.add(task, taskManager.getTasks().size());
     }
 
-    public void delete(Task task) {
+    private void delete(Task task) {
         taskManager.delete(task);
         ui.delete(task);
         ui.list(taskManager.getTasks());
