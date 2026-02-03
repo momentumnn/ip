@@ -1,5 +1,7 @@
 package thonk.core;
 
+import java.util.ArrayList;
+
 import thonk.Command;
 import thonk.Pair;
 import thonk.Task;
@@ -53,6 +55,9 @@ public class Thonk {
                 case DELETE:
                     delete(task);
                     break;
+                case FIND:
+                    find(input.split(" ",2)[1]);
+                    break;
                 default:
                     throw new ThonkException("U entered something wong");
                 }
@@ -72,5 +77,10 @@ public class Thonk {
         taskManager.delete(task);
         ui.delete(task);
         ui.list(taskManager.getTasks());
+    }
+
+    public void find(String text) {
+        ArrayList<Task> matchingTasks = taskManager.find(text);
+        ui.list(matchingTasks);
     }
 }

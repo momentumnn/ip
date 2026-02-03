@@ -39,4 +39,7 @@ public class TaskManager {
                 .findFirst()
                 .orElse(-1); // Returns -1 if no match is found
     }
+    public ArrayList<Task> find(String text) {
+        return new ArrayList<Task>(tasks.stream().filter(task -> task.getDescription().contains(text)).toList());
+    }
 }

@@ -9,7 +9,8 @@ public enum Command {
     LIST("List", new String[] {"list"}),
     DELETE("Delete", new String[] {"delete"}),
     BYE("Bye", new String[] {"bye"}),
-    UNKNOWN("Wrong command", new String[]{});
+    UNKNOWN("Wrong command", new String[] {}),
+    FIND("Find task", new String[] {"find"});
 
     private final String[] keywords;
     Command(String description, String[] keywords) {
