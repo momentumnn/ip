@@ -9,20 +9,33 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
+/**
+ * Class to interact with file that stores the data.
+ */
 public class Storage {
     private static final String DEFAULT_STORAGE_PATH = "thonk.txt";
     private final String path;
 
+    /**
+     * Instantiate the Storage class
+     * @param path String to path
+     */
     public Storage(String path) {
         this.path = stringToPath(path);
     }
+
+    /**
+     * Instantiate the Storage class to the default storage path
+     */
     public Storage() {
         this(DEFAULT_STORAGE_PATH);
     }
-    // Load data from disk
+
+    /**
+     * Load data from file
+     * @return ArrayList of tasks
+     */
     public ArrayList<Task> load() {
         File file = new File(path);
         ArrayList<Task> tasks = new ArrayList<>();
@@ -43,6 +56,11 @@ public class Storage {
         }
         return tasks;
     }
+
+    /**
+     * Saves ArrayList of tasks to file
+     * @param tasks Current list of tasks
+     */
     public void save(ArrayList<Task> tasks) {
         try {
             FileWriter file = new FileWriter(path);
@@ -88,12 +106,6 @@ public class Storage {
             }
         }
         return path.toString();
-    }
-    private String readFromTextStream(Path path) throws IOException {
-        Stream<String> lines = Files.lines(path);
-        String data = lines.collect(Collectors.joining("\n"));
-        lines.close();
-        return data;
     }
     @Override
     public String toString() {

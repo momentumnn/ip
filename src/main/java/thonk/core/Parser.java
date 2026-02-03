@@ -9,9 +9,18 @@ import thonk.Task;
 import thonk.ThonkException;
 import thonk.Todo;
 
+/**
+ * Represents a parsing interface
+ */
 public interface Parser {
     String DATE_REGEX = "(19|20)\\d{2}([/\\-])(0[1-9]|1[0-2]|[1-9])([/\\-])(0[1-9]|[12][0-9]|3[01])";
 
+    /**
+     * Parses the string input of text and converts it into a pair variable of command and task
+     * @param input String input of the text
+     * @param tm Taskmanager that the tasks are saved to, used to grab previous tasks
+     * @return Pair<\Command, Task> of the input. Returns null Command if list, bye or unknown
+     */
     static Pair<Command, Task> parse(String input, TaskManager tm) {
         String[] taskSplit = input.split(" ", 2);
         Command command = Command.fromString(taskSplit[0]);
