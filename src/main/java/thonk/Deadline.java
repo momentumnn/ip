@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Represents a Deadline task
+ * Represents a Deadline task, extended from Task.
  */
 public class Deadline extends Task {
     private static final String dateFormat = "dd/MM/yyyy";
