@@ -1,5 +1,8 @@
 package thonk;
 
+/**
+ * A class to store all commands
+ */
 public enum Command {
     TODO("todo", new String[] {"todo"}),
     DEADLINE("Thonk.Deadline", new String[] {"deadline", "/by"}),
@@ -17,6 +20,12 @@ public enum Command {
     }
     //public abstract void run(Thonk.core.TaskManager tm);
     //convert string to command
+
+    /**
+     * Converts string to command
+     * @param input String input of task
+     * @return Command. Null if input does not make sense
+     */
     public static Command fromString(String input) {
         if (input == null || input.isBlank()) {
             return null;
