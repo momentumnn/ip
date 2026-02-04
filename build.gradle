@@ -43,7 +43,7 @@ test {
 }
 
 application {
-    mainClass.set("thonk.core.Thonk")
+    mainClass.set("thonk.Launcher")
 }
 
 checkstyle {
