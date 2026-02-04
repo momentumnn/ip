@@ -89,8 +89,18 @@ public class Thonk {
         ui.list(taskManager.getTasks());
     }
 
+    /**
+     * Finds task that matches text
+     * @param text matching text
+     */
     public void find(String text) {
         ArrayList<Task> matchingTasks = taskManager.find(text);
         ui.list(matchingTasks);
+    }
+    /**
+     * Generates a response for the user's chat message.
+     */
+    public String getResponse(String input) {
+        return "Duke heard: " + input;
     }
 }

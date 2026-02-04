@@ -11,6 +11,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import thonk.core.Thonk;
 
 /**
  * Main class for JavaFX
@@ -23,6 +24,7 @@ public class Main extends Application {
     private Scene scene;
     private Image userImage = new Image(this.getClass().getResourceAsStream("/images/thinking_monkey.png"));
     private Image thonkImage = new Image(this.getClass().getResourceAsStream("/images/thonk.png"));
+    private Thonk thonk = new Thonk();
 
     @Override
     public void start(Stage stage) {
@@ -88,7 +90,12 @@ public class Main extends Application {
      * the dialog container. Clears the user input after processing.
      */
     private void handleUserInput() {
-        dialogContainer.getChildren().addAll(new DialogBox(userInput.getText(), userImage));
+        String userText = userInput.getText();
+        String thonkText = thonk.getResponse(userInput.getText());
+        dialogContainer.getChildren().addAll(
+                new DialogBox(userText, userImage),
+                new DialogBox(thonkText, thonkImage)
+        );
         userInput.clear();
     }
 }
