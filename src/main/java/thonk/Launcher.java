@@ -1,6 +1,7 @@
 package thonk;
 
 import javafx.application.Application;
+import thonk.core.Main;
 
 /**
  * A launcher class to workaround classpath issues.
