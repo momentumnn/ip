@@ -38,7 +38,7 @@ public class Event extends Task {
 
     /**
      * Returns a save text version of event.
-     * Example: D;0;new task;18/12/2002
+     * @return Example: D;0;new task;18/12/2002
      */
     @Override
     public String toSave() {

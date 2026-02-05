@@ -13,7 +13,7 @@ import thonk.Todo;
  * Represents a parsing interface
  */
 public interface Parser {
-    String DATE_REGEX = "(19|20)\\d{2}([/\\-])(0[1-9]|1[0-2]|[1-9])([/\\-])(0[1-9]|[12][0-9]|3[01])";
+    final String DATE_REGEX = "(19|20)\\d{2}([/\\-])(0[1-9]|1[0-2]|[1-9])([/\\-])(0[1-9]|[12][0-9]|3[01])";
 
     /**
      * Parses the string input of text and converts it into a pair variable of command and task
@@ -55,7 +55,7 @@ public interface Parser {
             String regex = "[1-" + max + "]";
             String[] taskS = input.split(" ");
             if (taskS.length == 1) {
-                throw new ThonkException("Include task number la wlao");
+                throw new ThonkException("Include task number please");
             }
             if (!taskS[1].matches(regex)) {
                 throw new ThonkException("out of bounds");
