@@ -5,7 +5,10 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import thonk.Command;
+import thonk.Pair;
 import thonk.Task;
+import thonk.ThonkException;
 
 /**
  * The class UI controls the system.in and system.out of Thonk.
@@ -13,17 +16,19 @@ import thonk.Task;
 public class UI {
     private final Scanner in;
     private final PrintStream out;
+    private TaskManager taskManager;
 
     /**
      * Creates a new class of UI
      */
     public UI() {
-        this(System.in, System.out);
+        this(System.in, System.out, new TaskManager());
     }
 
-    private UI(InputStream in, PrintStream out) {
+    private UI(InputStream in, PrintStream out, TaskManager taskManager) {
         this.in = new Scanner(in);
         this.out = out;
+        this.taskManager = taskManager;
     }
 
     /**
@@ -33,19 +38,51 @@ public class UI {
     public String getNextLine() {
         return in.nextLine();
     }
+    public String getResponse(String input) {
+        try {
+            input = input.trim();
+            Pair<Command, Task> output = Parser.parse(input, taskManager);
+            Task task = output.u();
+            Command command = output.t();
+            switch (command) {
+            case BYE:
+                return "";
+            case LIST:
+                return this.list(taskManager.getTasks());
+            case MARK, UNMARK:
+                taskManager.mark(task, command.equals(Command.MARK));
+                return this.mark(task);
+            case TODO, DEADLINE, EVENT:
+                taskManager.add(task);
+                return this.add(task, taskManager.getTasks().size());
+            case DELETE:
+                taskManager.delete(task);
+                return this.delete(task) + this.list(taskManager.getTasks());
+            case FIND:
+                String matchingText = input.split(" ")[1];
+                ArrayList<Task> matchingTasks = taskManager.find(matchingText);
+                return this.list(matchingTasks);
+            default:
+                throw new ThonkException("U entered something wong");
+            }
+        } catch (ThonkException e) {
+            return e.getMessage();
+        }
 
+    }
     /**
      * Prints the text loaded.
      * @param text text to be printed.
      */
-    public void print(String text) {
+    public String print(String text) {
         out.println(text);
+        return text;
     }
 
     /**
      * Prints banner
      */
-    public void banner() {
+    public String banner() {
         String divider = "_______________________________\n\n";
         String logo = """
                  _____ _                 _
@@ -54,30 +91,32 @@ public class UI {
                   | | | | | | (_) | | | |   <
                   |_| |_| |_|\\___/|_| |_|_|\\_\\
                 """;
-        out.println("Hello from\n" + logo + "what u want \n" + divider);
+        String text = "Hello from\n" + logo + "what u want \n" + divider;
+        return this.print(text);
     }
 
     /**
      * Prints the current list of tasks within pastTasks
      * @param pastTasks ArrayList of tasks
      */
-    public void list(ArrayList<Task> pastTasks) {
+    public String list(ArrayList<Task> pastTasks) {
+        String output = new String();
         if (pastTasks.isEmpty()) {
-            out.println("There is nothing to do.");
-            return;
+            output = "There are no past tasks";
         }
         int i = 1;
         for (Task task: pastTasks) {
-            out.println(i + ". " + task);
+            output = output.concat(i + ". " + task + "\n");
             i++;
         }
+        return this.print(output);
     }
 
     /**
      * Prints goodbye text
      */
-    public void goodbye() {
-        out.println("Good bye");
+    public String goodbye() {
+        return this.print("Good bye");
     }
 
     /**
@@ -85,27 +124,27 @@ public class UI {
      * @param task task that is created
      * @param size number of tasks in arrayList
      */
-    public void add(Task task, int size) {
-        out.println("Noted with thanks, \nadded " + task.getDescription() + " to ur list\nCurrently u have " + size
-                + " of stuff");
+    public String add(Task task, int size) {
+        return this.print("Noted with thanks, \nadded " + task.getDescription() + " to ur list\nCurrently u have "
+                + size + " of stuff");
     }
     /**
      * Prints default text after deleting a task.
      * @param task task that is deleted
      */
-    public void delete(Task task) {
-        out.println("Noted with thanks, \nsay bye bye to " + task.getDescription() + " from ur list");
+    public String delete(Task task) {
+        return this.print("Noted with thanks, \nsay bye bye to " + task.getDescription() + " from ur list");
     }
 
     /**
      * Prints default text after marking a task.
      * @param task task that is marked
      */
-    public void mark(Task task) {
+    public String mark(Task task) {
         if (task.getDone()) {
-            out.println("ok slay its done\n" + task);
+            return this.print("ok slay its done\n" + task);
         } else {
-            out.println("not marked\n" + task);
+            return this.print("not marked\n" + task);
         }
     }
 }
