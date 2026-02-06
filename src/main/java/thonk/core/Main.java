@@ -23,6 +23,10 @@ public class Main extends Application {
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
             stage.setScene(scene);
+            stage.setMinHeight(220);
+            stage.setMinWidth(417);
+            stage.setTitle("Thonk");
+            stage.setIconified(true);
             fxmlLoader.<MainWindow>getController().setThonk(thonk); //inject the Duke instance
             stage.show();
         } catch (IOException e) {
