@@ -13,7 +13,6 @@ import thonk.Todo;
  * Represents a parsing interface
  */
 public interface Parser {
-    final String DATE_REGEX = "(19|20)\\d{2}([/\\-])(0[1-9]|1[0-2]|[1-9])([/\\-])(0[1-9]|[12][0-9]|3[01])";
 
     /**
      * Parses the string input of text and converts it into a pair variable of command and task
@@ -26,37 +25,35 @@ public interface Parser {
         Command command = Command.fromString(taskSplit[0]);
         Task task = null;
         String[] taskDetails;
+        String taskToAdd;
+        String taskStartTime;
+        String taskEndTime;
         switch (command) {
         case TODO:
-            if (taskSplit.length == 1 || taskSplit[1].isBlank()) {
-                throw new IncompleteCommandException("todo");
+            try {
+                taskToAdd = taskSplit[1].trim();
+            } catch (IndexOutOfBoundsException e) {
+                throw new IncompleteCommandException(e.getMessage());
             }
-            task = new Todo(taskSplit[1]);
+            task = new Todo(taskToAdd);
             break;
         case DEADLINE:
             taskDetails = taskSplit[1].split("/by");
-            if (taskDetails.length == 1) {
-                throw new IncompleteCommandException("deadline");
-            }
-            if (!taskDetails[1].trim().matches(DATE_REGEX)) {
-                throw new ThonkException("Please make sure it is in YYYY-MM-DD format");
-            }
-            task = new Deadline(taskDetails[0], taskDetails[1]);
+            taskToAdd = taskDetails[0].trim();
+            taskEndTime = taskDetails[1].trim();
+            task = new Deadline(taskToAdd, taskEndTime);
             break;
         case EVENT:
             taskDetails = taskSplit[1].split("/from|/to");
-            if (taskDetails.length != 3) {
-                throw new IncompleteCommandException("event");
-            }
-            task = new Event(taskDetails[0], taskDetails[1], taskDetails[2]);
+            taskToAdd = taskDetails[0].trim();
+            taskStartTime = taskDetails[1];
+            taskEndTime = taskDetails[2];
+            task = new Event(taskToAdd, taskStartTime, taskEndTime);
             break;
         case MARK, UNMARK, DELETE:
             int max = tm.getTasks().size();
             String regex = "[1-" + max + "]";
             String[] taskS = input.split(" ");
-            if (taskS.length == 1) {
-                throw new ThonkException("Include task number please");
-            }
             if (!taskS[1].matches(regex)) {
                 throw new ThonkException("out of bounds");
             }

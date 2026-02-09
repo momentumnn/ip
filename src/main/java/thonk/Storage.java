@@ -15,6 +15,7 @@ import java.util.Scanner;
  */
 public class Storage {
     private static final String DEFAULT_STORAGE_PATH = "thonk.txt";
+    private static final String SPLITTING_CHAR = ";";
     private final String path;
 
     /**
@@ -66,7 +67,7 @@ public class Storage {
             FileWriter file = new FileWriter(path);
             tasks.forEach(task -> {
                 try {
-                    file.write(task.toSave() + "\n");
+                    file.write(task.toSave(SPLITTING_CHAR) + "\n");
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -78,7 +79,7 @@ public class Storage {
     }
     private Task parseTask(String line) throws IndexOutOfBoundsException {
         try {
-            String[] parts = line.split(";");
+            String[] parts = line.split(SPLITTING_CHAR);
             String type = parts[0];
             String description = parts[2];
             boolean isDone = Boolean.parseBoolean(parts[1]);

@@ -10,6 +10,7 @@ public class Deadline extends Task {
     private static final String dateFormat = "dd/MM/yyyy";
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateFormat);
     protected LocalDate by;
+    final String DATE_REGEX = "(19|20)\\d{2}([/\\-])(0[1-9]|1[0-2]|[1-9])([/\\-])(0[1-9]|[12][0-9]|3[01])";
 
     /**
      * Creates an instance of Deadline.
@@ -32,7 +33,10 @@ public class Deadline extends Task {
         this.by = stringToDate(by);
     }
     private LocalDate stringToDate(String date) {
-        return LocalDate.parse(date.trim());
+        if (date.matches(DATE_REGEX)) {
+            return LocalDate.parse(date.trim());
+        }
+        throw new ThonkException("Please make sure it is in YYYY-MM-DD format");
     }
 
     @Override
@@ -45,7 +49,7 @@ public class Deadline extends Task {
      * Example: D;0;new task;18/12/2002
      */
     @Override
-    public String toSave() {
-        return "D;" + isDone + ";" + description + ";" + by;
+    public String toSave(String splitChar) {
+        return "D" + splitChar + isDone + splitChar + description + splitChar + by;
     }
 }

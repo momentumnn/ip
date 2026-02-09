@@ -26,7 +26,7 @@ public abstract class Task {
         this.description = description;
         this.isDone = isDone;
     }
-    public abstract String toSave();
+    public abstract String toSave(String splitChar);
 
     public String getStatusIcon() {
         return (isDone ? "X" : " "); // mark done task with X

@@ -28,8 +28,11 @@ public enum Command {
      * @return Command. Null if input does not make sense
      */
     public static Command fromString(String input) {
-        if (input == null || input.isBlank()) {
-            return null;
+        boolean isNullInput = input == null;
+        assert input != null;
+        boolean isBlankInput = input.isBlank();
+        if (isNullInput || isBlankInput) {
+            return Command.UNKNOWN;
         }
         // Split input to get the first word (the actual command)
         String firstWord = input.split(" ")[0].toLowerCase();

@@ -41,7 +41,7 @@ public class Event extends Task {
      * @return Example: D;0;new task;18/12/2002
      */
     @Override
-    public String toSave() {
-        return "E;" + isDone + ";" + description + ";" + startTime + ";" + endTime;
+    public String toSave(String splitChar) {
+        return "E" + splitChar + isDone + splitChar + description + splitChar + startTime + splitChar + endTime;
     }
 }
