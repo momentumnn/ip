@@ -65,6 +65,7 @@ public interface Parser {
         case LIST, BYE, FIND, UNKNOWN:
             break;
         default:
+            assert false : command;
             break;
         }
         return new Pair<>(command, task);

@@ -36,6 +36,10 @@ public class MainWindow extends AnchorPane {
     /** Injects the Duke instance */
     public void setThonk(Thonk t) {
         thonk = t;
+        String banner = thonk.run();
+        dialogContainer.getChildren().addAll(
+                DialogBox.getDukeDialog(banner, thonkImage)
+        );
     }
 
     /**

@@ -19,7 +19,9 @@ public class TaskManager {
      */
     public TaskManager(String path) {
         storage = new Storage(path);
+        assert storage != null : "Storage not initialised";
         tasks = storage.load();
+        assert tasks != null : "Tasks not initialised";
     }
 
     /**

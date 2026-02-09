@@ -21,10 +21,11 @@ public class Thonk {
      * Instantiate the full thonk program.
      * @param args takes in file names from user input.
      */
-    public void run(String[] args) {
+    public String run(String... args) {
         start(args);
-        echo();
-        ui.goodbye();
+        return ui.banner();
+        //echo();
+        //ui.goodbye();
     }
 
     private void start(String[] args) {
@@ -34,7 +35,14 @@ public class Thonk {
 
     private TaskManager initTaskManager(String[] args) {
         boolean isStorageFileSpecifiedByUser = args.length > 0;
-        return isStorageFileSpecifiedByUser ? new TaskManager(args[0]) : new TaskManager();
+        TaskManager taskManager;
+        if (isStorageFileSpecifiedByUser) {
+            taskManager = new TaskManager(args[0]);
+        } else {
+            taskManager = new TaskManager();
+        }
+        assert taskManager != null : "Task Manager is not instantiated";
+        return taskManager;
     }
 
     private void echo() {

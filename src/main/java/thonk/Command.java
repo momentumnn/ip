@@ -29,7 +29,7 @@ public enum Command {
      */
     public static Command fromString(String input) {
         if (input == null || input.isBlank()) {
-            return null;
+            return Command.UNKNOWN;
         }
         // Split input to get the first word (the actual command)
         String firstWord = input.split(" ")[0].toLowerCase();
