@@ -65,7 +65,7 @@ public class UI {
             default:
                 throw new ThonkException("U entered something wong");
             }
-        } catch (ThonkException e) {
+        } catch (Exception e) {
             return e.getMessage();
         }
 

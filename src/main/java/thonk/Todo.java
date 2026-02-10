@@ -30,8 +30,8 @@ public class Todo extends Task {
      * Example: D;0;new task;18/12/2002
      */
     @Override
-    public String toSave() {
-        return "T;" + isDone + ";" + description;
+    public String toSave(String splitChar) {
+        return "T" + splitChar + isDone + splitChar + description;
     }
 }
 
