@@ -16,7 +16,7 @@ import thonk.ThonkException;
 public class UI {
     private final Scanner in;
     private final PrintStream out;
-    private TaskManager taskManager;
+    private final TaskManager taskManager;
 
     /**
      * Creates a new class of UI
@@ -53,6 +53,7 @@ public class UI {
                 taskManager.mark(task, command.equals(Command.MARK));
                 return this.mark(task);
             case TODO, DEADLINE, EVENT:
+                checkTaskExists(task, taskManager);
                 taskManager.add(task);
                 return this.add(task, taskManager.getTasks().size());
             case DELETE:
@@ -104,19 +105,13 @@ public class UI {
         if (pastTasks.isEmpty()) {
             output = "There are no past tasks";
         }
+        assert !pastTasks.isEmpty();
         int i = 1;
         for (Task task: pastTasks) {
             output = output.concat(i + ". " + task + "\n");
             i++;
         }
         return this.print(output);
-    }
-
-    /**
-     * Prints goodbye text
-     */
-    public String goodbye() {
-        return this.print("Good bye");
     }
 
     /**
@@ -145,6 +140,12 @@ public class UI {
             return this.print("ok slay its done\n" + task);
         } else {
             return this.print("not marked\n" + task);
+        }
+    }
+    private void checkTaskExists(Task task, TaskManager tm) {
+        boolean taskExists = !tm.find(task.getDescription()).isEmpty();
+        if (taskExists) {
+            throw new ThonkException("Task " + task.getDescription() + " exists");
         }
     }
 }
