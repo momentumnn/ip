@@ -143,7 +143,7 @@ public class UI {
         }
     }
     private void checkTaskExists(Task task, TaskManager tm) {
-        boolean taskExists = !tm.find(task.getDescription()).isEmpty();
+        boolean taskExists = tm.isExistingTask(task.getDescription());
         if (taskExists) {
             throw new ThonkException("Task " + task.getDescription() + " exists");
         }

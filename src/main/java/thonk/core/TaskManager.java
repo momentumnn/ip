@@ -73,7 +73,27 @@ public class TaskManager {
                 .findFirst()
                 .orElse(-1); // Returns -1 if no match is found
     }
+
+    /**
+     * Finds tasks that contain text that matches within the TaskManager
+     * @param text Text to find for
+     * @return ArrayList<\Task>\  of tasks
+     */
     public ArrayList<Task> find(String text) {
         return new ArrayList<Task>(tasks.stream().filter(task -> task.getDescription().contains(text)).toList());
+    }
+
+    /**
+     * Finds if there is an existing task within TaskManager
+     * @param text title of new task
+     * @return True if duplicate is found
+     */
+    public boolean isExistingTask(String text) {
+        return tasks.stream()
+                .filter(task -> task
+                        .getDescription()
+                        .contentEquals(text))
+                .findFirst()
+                .isPresent();
     }
 }
