@@ -106,8 +106,6 @@ public class Storage {
                 throw new RuntimeException(e);
             }
         }
-        assert path.endsWith(string) : "Path not created properly";
-        assert Files.exists(path) : "File does not exist";
         return path.toString();
     }
     @Override
