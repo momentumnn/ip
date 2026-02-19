@@ -44,12 +44,11 @@ public class Storage {
         if (!file.exists()) {
             return tasks; // Return empty list if file doesn't exist
         }
-        try {
-            Scanner scanner = new Scanner(file);
+        try (Scanner scanner = new Scanner(file)) {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
-                if (parseTask(line) != null) {
-                    tasks.add(parseTask(line));
+                if (parseTaskFromFile(line) != null) {
+                    tasks.add(parseTaskFromFile(line));
                 }
             }
         } catch (FileNotFoundException e) {
@@ -77,7 +76,7 @@ public class Storage {
             throw new RuntimeException(e);
         }
     }
-    private Task parseTask(String line) throws IndexOutOfBoundsException {
+    private Task parseTaskFromFile(String line) throws IndexOutOfBoundsException {
         try {
             String[] parts = line.split(SPLITTING_CHAR);
             String type = parts[0];
@@ -89,25 +88,36 @@ public class Storage {
             case "E" -> new Event(description, isDone, parts[3], parts[4]);
             default -> throw new IllegalArgumentException("Unknown task type: " + type);
             };
-        } catch (Exception e) {
+        } catch (IndexOutOfBoundsException e) {
             System.out.println("Invalid task line: " + line);
         }
         return null;
     }
     private String stringToPath(String string) {
-        String home = System.getProperty("user.dir");
-        Path path = Paths.get(home, string);
-        boolean directoryExists = Files.exists(path);
-        if (!directoryExists) {
-            System.out.println("Directory does not exist!");
-            try {
-                Files.createFile(path);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+        if (string == null || string.isBlank()) {
+            throw new IllegalArgumentException("Path cannot be null/blank");
+        }
+        Path inputPath = Paths.get(string.trim());
+        // Detect absolute vs relative
+        Path path = inputPath.isAbsolute()
+                ? inputPath
+                : Paths.get(System.getProperty("user.dir")).resolve(inputPath).normalize();
+        try {
+            // Ensure parent folders exist (if any)
+            Path parent = path.getParent();
+            if (parent != null) {
+                Files.createDirectories(parent);
             }
+            // Ensure file exists
+            if (Files.notExists(path)) {
+                Files.createFile(path);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to create/access path: " + path, e);
         }
         return path.toString();
     }
+
     @Override
     public String toString() {
         return path;
