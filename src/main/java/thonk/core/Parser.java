@@ -17,35 +17,32 @@ public interface Parser {
      * Parses the string input of text and converts it into a pair variable of command and task
      * @param input String input of the text
      * @param tm Taskmanager that the tasks are saved to, used to grab previous tasks
-     * @return Pair<\Command, Task> of the input. Returns null Command if list, bye or unknown
+     * @return Pair<\Command, Task> of the input. Task is null for commands that don't target a specific task.
      */
     static Pair<Command, Task> parse(String input, TaskManager tm) {
-        String[] taskSplit = input.split(" ", 2);
-        Command command = Command.fromString(taskSplit[0]);
-        Task task = null;
-        String[] taskDetails;
-        String taskToAdd;
-        String taskStartTime;
-        String taskEndTime;
-        switch (command) {
-        case TODO:
-            return new Pair<>(command, createTodo(taskSplit[1]));
-        case DEADLINE:
-            return new Pair<>(command, createDeadline(taskSplit[1]));
-        case EVENT:
-            return new Pair<>(command, createEvent(taskSplit[1]));
-        case MARK, UNMARK, DELETE:
-            return new Pair<>(command, findTask(input, tm));
-        case LIST, BYE, FIND, UNKNOWN:
-            break;
-        default:
-            assert false : command;
-            break;
+        if (input == null || input.isBlank()) {
+            throw new ThonkException("Input cannot be empty");
         }
-        return new Pair<>(command, task);
-
+        if (tm == null) {
+            throw new ThonkException("Task manager is not available");
+        }
+        String[] taskSplit = input.trim().split("\\s+", 2);
+        Command command = Command.fromString(taskSplit[0]);
+        return switch (command) {
+        case TODO -> new Pair<>(command, createTodo(requireArgs(command, taskSplit)));
+        case DEADLINE -> new Pair<>(command, createDeadline(requireArgs(command, taskSplit)));
+        case EVENT -> new Pair<>(command, createEvent(requireArgs(command, taskSplit)));
+        case MARK, UNMARK, DELETE -> new Pair<>(command, findTask(input, tm));
+        case LIST, BYE, FIND, UNKNOWN -> new Pair<>(command, null);
+        default -> throw new ThonkException("Unsupported command: " + command);
+        };
     }
-
+    private static String requireArgs(Command command, String[] parts) {
+        if (parts.length < 2 || parts[1].isBlank()) {
+            throw new ThonkException("Missing arguments for command: " + command);
+        }
+        return parts[1].trim();
+    }
     private static Todo createTodo(String arg) {
         return new Todo(arg);
     }
@@ -65,10 +62,11 @@ public interface Parser {
     private static Task findTask(String arg, TaskManager tm) {
         int max = tm.getTasks().size();
         String regex = "[1-" + max + "]";
-        String[] taskS = arg.split(" ");
-        if (!taskS[1].matches(regex)) {
+        String[] taskIndex = arg.split(" ");
+        if (!taskIndex[1].matches(regex)) {
             throw new ThonkException("out of bounds");
         }
-        return tm.getTasks().get(Integer.parseInt(arg.split(" ")[1]) - 1);
+        return tm.getTasks()
+                .get(Integer.parseInt(arg.split(" ")[1]) - 1);
     }
 }
