@@ -19,7 +19,7 @@ import thonk.task.Todo;
  * Class to interact with file that stores the data.
  */
 public class Storage {
-    private static final String DEFAULT_STORAGE_PATH = "thonk.txt";
+    private static final String DEFAULT_STORAGE_PATH = "data" + File.separator + "thonk.txt";
     private static final String SPLITTING_CHAR = ";";
     private final String path;
 

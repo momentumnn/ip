@@ -80,7 +80,12 @@ public class TaskManager {
      * @return ArrayList<\Task>\  of tasks
      */
     public ArrayList<Task> find(String text) {
-        return new ArrayList<Task>(tasks.stream().filter(task -> task.getDescription().contains(text)).toList());
+        return new ArrayList<Task>(tasks.stream()
+                .filter(task -> task
+                        .getDescription()
+                        .toLowerCase()
+                        .contains(text.toLowerCase()))
+                .toList());
     }
 
     /**

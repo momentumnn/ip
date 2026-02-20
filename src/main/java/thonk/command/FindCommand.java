@@ -23,7 +23,6 @@ public class FindCommand extends Command {
         if (pastTasks.isEmpty()) {
             output = "There are no past tasks";
         }
-        assert !pastTasks.isEmpty();
         int i = 1;
         for (Task task: pastTasks) {
             output = output.concat(i + ". " + task + "\n");
