@@ -1,6 +1,6 @@
 package thonk.core;
 
-import thonk.Command;
+import thonk.command.Command;
 import thonk.Deadline;
 import thonk.Event;
 import thonk.Pair;
@@ -40,7 +40,7 @@ public interface Parser {
     }
     private static String requireArgs(Command command, String[] parts) {
         if (parts.length < 2 || parts[1].isBlank()) {
-            throw new ThonkException("Missing arguments for command: " + command);
+            throw new IndexOutOfBoundsException("Missing arguments for command: " + command);
         }
         return parts[1].trim();
     }

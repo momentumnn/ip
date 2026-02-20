@@ -5,7 +5,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import thonk.Command;
+import thonk.command.Command;
 import thonk.Pair;
 import thonk.Task;
 import thonk.ThonkException;
@@ -66,7 +66,9 @@ public class UI {
             default:
                 throw new ThonkException("U entered something wrong");
             }
-        } catch (Exception e) {
+        } catch (IndexOutOfBoundsException e) {
+            return "Please enter a valid command";
+        } catch (ThonkException e) {
             return e.getMessage();
         }
 

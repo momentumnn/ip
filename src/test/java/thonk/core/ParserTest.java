@@ -11,7 +11,7 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import thonk.Command;
+import thonk.command.Command;
 import thonk.Pair;
 import thonk.Task;
 import thonk.ThonkException;
