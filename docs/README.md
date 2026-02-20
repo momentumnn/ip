@@ -14,7 +14,7 @@ Thonk is a desktop app for managing contacts,
 1. Ensure you have Java `17` or above installed in your Computer.<br>
    **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
 
-1. Download the latest `.jar` file from [here]().
+1. Download the latest `.jar` file from [here](https://github.com/momentumnn/ip/releases/tag/A-Release).
 
 1. Copy the file to the folder you want to use as the _home folder_ for your Thonk.
 
