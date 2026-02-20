@@ -1,7 +1,9 @@
-package thonk;
+package thonk.task;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
+import thonk.ThonkException;
 
 /**
  * Represents a {@code Deadline} task with a due date.
@@ -38,10 +40,13 @@ public class Deadline extends Task {
         this.by = stringToDate(by);
     }
     private LocalDate stringToDate(String date) {
-        if (date.matches(dateRegex)) {
+        if (isLocalDate(date)) {
             return LocalDate.parse(date.trim());
         }
         throw new ThonkException("Please make sure it is in YYYY-MM-DD format");
+    }
+    public boolean isLocalDate(String date) {
+        return date.matches(dateRegex);
     }
 
     @Override

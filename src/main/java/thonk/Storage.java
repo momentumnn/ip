@@ -10,6 +10,11 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import thonk.task.Deadline;
+import thonk.task.Event;
+import thonk.task.Task;
+import thonk.task.Todo;
+
 /**
  * Class to interact with file that stores the data.
  */
@@ -89,8 +94,9 @@ public class Storage {
             case "E" -> new Event(description, isDone, parts[3], parts[4]);
             default -> throw new IllegalArgumentException("Unknown task type: " + type);
             };
-        } catch (IndexOutOfBoundsException e) {
+        } catch (Exception e) {
             System.out.println("Invalid task line: " + line);
+            System.out.println(e.getMessage());
         }
         return null;
     }

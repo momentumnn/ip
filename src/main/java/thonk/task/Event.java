@@ -1,11 +1,13 @@
-package thonk;
+package thonk.task;
+
+import java.time.LocalDate;
 
 /**
  * Represents a Event task, extended from Task.
  */
 public class Event extends Task {
-    protected String startTime;
-    protected String endTime;
+    protected LocalDate startTime;
+    protected LocalDate endTime;
 
     /**
      * Creates an instance of Event.
@@ -15,8 +17,8 @@ public class Event extends Task {
      */
     public Event(String description, String startTime, String endTime) {
         super(description);
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.startTime = stringToDate(startTime);
+        this.endTime = stringToDate(endTime);
     }
     /**
      * Creates an instance of Event.
@@ -27,10 +29,12 @@ public class Event extends Task {
      */
     public Event(String description, boolean isDone, String startTime, String endTime) {
         super(description, isDone);
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.startTime = stringToDate(startTime);
+        this.endTime = stringToDate(endTime);
     }
-
+    private LocalDate stringToDate(String date) {
+        return LocalDate.parse(date.trim());
+    }
     @Override
     public String toString() {
         return "[E]" + super.toString() + " (from: " + startTime + " to " + endTime + ")";

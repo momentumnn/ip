@@ -6,26 +6,25 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import thonk.command.Command;
-import thonk.Pair;
-import thonk.Task;
+import thonk.task.Task;
 import thonk.ThonkException;
 
 /**
  * The class UI controls the system.in and system.out of Thonk.
  */
-public class UI {
+public class Ui {
     private final Scanner in;
     private final PrintStream out;
     private final TaskManager taskManager;
-
+    public static final String ADDED_TASK = "Added task: ";
     /**
      * Creates a new class of UI
      */
-    public UI() {
+    public Ui() {
         this(System.in, System.out, new TaskManager());
     }
 
-    private UI(InputStream in, PrintStream out, TaskManager taskManager) {
+    private Ui(InputStream in, PrintStream out, TaskManager taskManager) {
         this.in = new Scanner(in);
         this.out = out;
         this.taskManager = taskManager;
@@ -41,33 +40,35 @@ public class UI {
     public String getResponse(String input) {
         try {
             input = input.trim();
-            Pair<Command, Task> output = Parser.parse(input, taskManager);
-            Task task = output.u();
-            Command command = output.t();
-            switch (command) {
-            case BYE:
-                return "";
-            case LIST:
-                return this.list(taskManager.getTasks());
-            case MARK, UNMARK:
-                taskManager.mark(task, command.equals(Command.MARK));
-                return this.mark(task);
-            case TODO, DEADLINE, EVENT:
-                checkTaskExists(task, taskManager);
-                taskManager.add(task);
-                return this.add(task, taskManager.getTasks().size());
-            case DELETE:
-                taskManager.delete(task);
-                return this.delete(task) + this.list(taskManager.getTasks());
-            case FIND:
-                String matchingText = input.split(" ")[1];
-                ArrayList<Task> matchingTasks = taskManager.find(matchingText);
-                return this.list(matchingTasks);
-            default:
-                throw new ThonkException("U entered something wrong");
-            }
+            Command output = Parser.parse(input, taskManager);
+            output.execute(taskManager);
+            return output.toString();
+//            Task task = output.u();
+//            Command command = output.t();
+//            switch (command) {
+//            case BYE:
+//                return "";
+//            case LIST:
+//                return this.list(taskManager.getTasks());
+//            case MARK, UNMARK:
+//                taskManager.mark(task, command.equals(Command.MARK));
+//                return this.mark(task);
+//            case TODO, DEADLINE, EVENT:
+//                checkTaskExists(task, taskManager);
+//                taskManager.add(task);
+//                return this.add(task, taskManager.getTasks().size());
+//            case DELETE:
+//                taskManager.delete(task);
+//                return this.delete(task) + this.list(taskManager.getTasks());
+//            case FIND:
+//                String matchingText = input.split(" ")[1];
+//                ArrayList<Task> matchingTasks = taskManager.find(matchingText);
+//                return this.list(matchingTasks);
+//            default:
+//                throw new ThonkException("U entered something wrong");
+//            }
         } catch (IndexOutOfBoundsException e) {
-            return "Please enter a valid command";
+            return "Too many arguments.";
         } catch (ThonkException e) {
             return e.getMessage();
         }

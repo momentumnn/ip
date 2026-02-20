@@ -1,4 +1,4 @@
-package thonk;
+package thonk.task;
 
 /**
  * Represents an abstract class Task for subclasses to follow

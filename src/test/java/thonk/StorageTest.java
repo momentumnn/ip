@@ -13,6 +13,11 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import thonk.task.Deadline;
+import thonk.task.Event;
+import thonk.task.Task;
+import thonk.task.Todo;
+
 public class StorageTest {
 
     @TempDir

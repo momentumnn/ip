@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.stream.IntStream;
 
 import thonk.Storage;
-import thonk.Task;
+import thonk.task.Task;
 
 /**
  * The class TaskManager stores all tasks and handles the file management between Thonk and the filesystem.

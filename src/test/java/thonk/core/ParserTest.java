@@ -13,9 +13,9 @@ import org.junit.jupiter.api.io.TempDir;
 
 import thonk.command.Command;
 import thonk.Pair;
-import thonk.Task;
+import thonk.task.Task;
 import thonk.ThonkException;
-import thonk.Todo;
+import thonk.task.Todo;
 
 public class ParserTest {
 
