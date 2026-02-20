@@ -1,4 +1,4 @@
-package thonk;
+package thonk.task;
 
 /**
  * Represents an abstract class Task for subclasses to follow
@@ -21,7 +21,7 @@ public abstract class Task {
      * Creates a Task with description and isDone value
      * @param description Task description
      * @param isDone boolean whether task is done
-     */
+*/
     public Task(String description, boolean isDone) {
         this.description = description;
         this.isDone = isDone;

@@ -1,6 +1,7 @@
 
 package thonk;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -25,8 +26,8 @@ public class MainWindow extends AnchorPane {
 
     private Thonk thonk;
 
-    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/thinking_monkey.png"));
-    private Image thonkImage = new Image(this.getClass().getResourceAsStream("/images/thonk.png"));
+    private final Image userImage = new Image(this.getClass().getResourceAsStream("/images/thinking_monkey.png"));
+    private final Image thonkImage = new Image(this.getClass().getResourceAsStream("/images/thonk.png"));
 
     @FXML
     public void initialize() {
@@ -54,6 +55,9 @@ public class MainWindow extends AnchorPane {
                 DialogBox.getUserDialog(input, userImage),
                 DialogBox.getDukeDialog(response, thonkImage)
         );
+        if (response.equals("bye")) {
+            Platform.exit();
+        }
         userInput.clear();
     }
 }

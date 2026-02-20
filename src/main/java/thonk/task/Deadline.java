@@ -1,21 +1,28 @@
-package thonk;
+package thonk.task;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import thonk.ThonkException;
+
 /**
- * Represents a Deadline task, extended from Task.
+ * Represents a {@code Deadline} task with a due date.
+ * <p>
+ * The due date is stored as a {@link LocalDate}. Input date strings are validated before parsing.
+ * </p>
  */
 public class Deadline extends Task {
     private static final String dateFormat = "dd/MM/yyyy";
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateFormat);
     protected LocalDate by;
-    final String DATE_REGEX = "(19|20)\\d{2}([/\\-])(0[1-9]|1[0-2]|[1-9])([/\\-])(0[1-9]|[12][0-9]|3[01])";
+    final String dateRegex = "(19|20)\\d{2}([/\\-])(0[1-9]|1[0-2]|[1-9])([/\\-])(0[1-9]|[12][0-9]|3[01])";
 
     /**
-     * Creates an instance of Deadline.
-     * @param description Description of task
-     * @param by
+     * Creates a new {@code Deadline} task with the given description and due date.
+     *
+     * @param description Description of the task.
+     * @param by Due date string for the task (expected in {@code YYYY-MM-DD} format).
+     * @throws ThonkException If {@code by} does not match the expected format.
      */
     public Deadline(String description, String by) {
         super(description);
@@ -33,10 +40,13 @@ public class Deadline extends Task {
         this.by = stringToDate(by);
     }
     private LocalDate stringToDate(String date) {
-        if (date.matches(DATE_REGEX)) {
+        if (isLocalDate(date)) {
             return LocalDate.parse(date.trim());
         }
         throw new ThonkException("Please make sure it is in YYYY-MM-DD format");
+    }
+    public boolean isLocalDate(String date) {
+        return date.matches(dateRegex);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package thonk;
+package thonk.task;
 
 /**
  * Represents a Deadline task, extended from Task.

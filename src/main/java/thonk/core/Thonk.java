@@ -8,10 +8,10 @@ import thonk.ThonkException;
  * deadlines, and events through a simple text interface
  */
 public class Thonk {
-    private UI ui;
+    private Ui ui;
 
     Thonk() {
-        this.ui = new UI();
+        this.ui = new Ui();
     }
     public static void main(String[] args) {
         new Thonk().run(args);
@@ -29,7 +29,7 @@ public class Thonk {
     }
 
     private void start(String[] args) {
-        ui = new UI();
+        ui = new Ui();
         ui.banner();
     }
 
