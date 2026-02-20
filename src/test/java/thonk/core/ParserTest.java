@@ -1,20 +1,23 @@
 package thonk.core;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Path;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import thonk.command.Command;
-import thonk.Pair;
-import thonk.task.Task;
 import thonk.ThonkException;
+import thonk.command.Command;
+import thonk.command.DeadlineCommand;
+import thonk.command.ErrorCommand;
+import thonk.command.EventCommand;
+import thonk.command.MarkCommand;
+import thonk.command.TodoCommand;
 import thonk.task.Todo;
 
 public class ParserTest {
@@ -37,15 +40,23 @@ public class ParserTest {
     // -------------------------
 
     @Test
-    void parse_nullInput_throwsThonkException() {
+    void parse_nullInput_returnsErrorCommand() {
         TaskManager tm = newTaskManagerWithTasks(0);
-        assertThrows(ThonkException.class, () -> Parser.parse(null, tm));
+
+        Command out = Parser.parse(null, tm);
+
+        assertInstanceOf(ErrorCommand.class, out);
+        assertEquals("Input cannot be empty", out.toString());
     }
 
     @Test
-    void parse_blankInput_throwsThonkException() {
+    void parse_blankInput_returnsErrorCommand() {
         TaskManager tm = newTaskManagerWithTasks(0);
-        assertThrows(ThonkException.class, () -> Parser.parse("   \t\n", tm));
+
+        Command out = Parser.parse("   \t\n", tm);
+
+        assertInstanceOf(ErrorCommand.class, out);
+        assertEquals("Input cannot be empty", out.toString());
     }
 
     @Test
@@ -58,11 +69,9 @@ public class ParserTest {
     // -------------------------
 
     @Test
-    void parse_unknownCommand_returnsUnknownAndNullTask() {
+    void parse_unknownCommand_throwsThonkException() {
         TaskManager tm = newTaskManagerWithTasks(0);
-        Pair<Command, Task> out = Parser.parse("wat", tm);
-        assertEquals(Command.UNKNOWN, out.t());
-        assertNull(out.u());
+        assertThrows(ThonkException.class, () -> Parser.parse("wat", tm));
     }
 
     @Test
@@ -72,26 +81,28 @@ public class ParserTest {
     }
 
     @Test
-    void parse_todoWithWeirdWhitespace_parsesTodo() {
+    void parse_todoWithWeirdWhitespace_returnsTodoCommand() {
         TaskManager tm = newTaskManagerWithTasks(0);
-        Pair<Command, Task> out = Parser.parse("todo   read   book", tm);
-        assertEquals(Command.TODO, out.t());
-        assertNotNull(out.u());
-        assertEquals(Todo.class, out.u().getClass());
+
+        Command out = Parser.parse("todo   read   book", tm);
+
+        assertInstanceOf(TodoCommand.class, out);
     }
 
     // -------------------------
-    // MARK/UNMARK/DELETE - index handling
+    // MARK - index handling
     // -------------------------
 
     @Test
-    void parse_markValidIndex_returnsReferencedTask() {
+    void parse_markValidIndex_marksCorrectTaskOnExecute() {
         TaskManager tm = newTaskManagerWithTasks(3);
+        assertFalse(tm.getTasks().get(1).getDone());
 
-        Pair<Command, Task> out = Parser.parse("mark 2", tm);
-        assertEquals(Command.MARK, out.t());
-        assertNotNull(out.u());
-        assertSame(tm.getTasks().get(1), out.u());
+        Command out = Parser.parse("mark 2", tm);
+
+        assertInstanceOf(MarkCommand.class, out);
+        out.execute(tm);
+        assertTrue(tm.getTasks().get(1).getDone());
     }
 
     @Test
@@ -115,22 +126,11 @@ public class ParserTest {
     @Test
     void parse_markMissingIndex_currentlyThrowsRuntimeException() {
         TaskManager tm = newTaskManagerWithTasks(3);
-        // This reveals a robustness gap: missing index token.
         assertThrows(RuntimeException.class, () -> Parser.parse("mark", tm));
     }
 
-    @Test
-    void parse_multiDigitIndex_regexBug() {
-        TaskManager tm = newTaskManagerWithTasks(12);
-
-        // With 12 tasks, "mark 10" should be valid logically.
-        // If bounds check uses a character-class regex like "[1-12]",
-        // it will NOT match "10" and will throw "out of bounds".
-        assertThrows(ThonkException.class, () -> Parser.parse("mark 10", tm));
-    }
-
     // -------------------------
-    // DEADLINE / EVENT weird formats
+    // DEADLINE / EVENT formats & validation
     // -------------------------
 
     @Test
@@ -140,21 +140,60 @@ public class ParserTest {
     }
 
     @Test
-    void parse_deadlineMissingBySegment_currentlyThrowsRuntimeException() {
+    void parse_deadlineMissingBySegment_returnsErrorCommand() {
         TaskManager tm = newTaskManagerWithTasks(0);
-        // Example: no "/by" segment -> commonly causes ArrayIndexOutOfBoundsException
-        assertThrows(RuntimeException.class, () -> Parser.parse("deadline submit report 2026-01-01", tm));
+
+        Command out = Parser.parse("deadline submit report 2026-01-01", tm);
+
+        assertInstanceOf(ErrorCommand.class, out);
+        assertEquals(Parser.INVALID_DEADLINE_FORMAT_MESSAGE, out.toString());
     }
 
     @Test
-    void parse_eventMissingToSegment_currentlyThrowsRuntimeException() {
+    void parse_deadlineInvalidDate_returnsErrorCommand() {
         TaskManager tm = newTaskManagerWithTasks(0);
-        assertThrows(RuntimeException.class, () -> Parser.parse("event party /from 1pm", tm));
+
+        Command out = Parser.parse("deadline submit report /by not-a-date", tm);
+
+        assertInstanceOf(ErrorCommand.class, out);
+        assertEquals(Parser.INVALID_ISO_DATE_MESSAGE, out.toString());
     }
 
     @Test
-    void parse_eventMissingFromSegment_currentlyThrowsRuntimeException() {
+    void parse_deadlineValid_returnsDeadlineCommand() {
         TaskManager tm = newTaskManagerWithTasks(0);
-        assertThrows(RuntimeException.class, () -> Parser.parse("event party /to 2pm", tm));
+
+        Command out = Parser.parse("deadline submit report /by 2026-01-01", tm);
+
+        assertInstanceOf(DeadlineCommand.class, out);
+    }
+
+    @Test
+    void parse_eventMissingToSegment_returnsErrorCommand() {
+        TaskManager tm = newTaskManagerWithTasks(0);
+
+        Command out = Parser.parse("event party /from 1pm", tm);
+
+        assertInstanceOf(ErrorCommand.class, out);
+        assertEquals(Parser.INVALID_EVENT_FORMAT_MESSAGE, out.toString());
+    }
+
+    @Test
+    void parse_eventMissingFromSegment_returnsErrorCommand() {
+        TaskManager tm = newTaskManagerWithTasks(0);
+
+        Command out = Parser.parse("event party /to 2pm", tm);
+
+        assertInstanceOf(ErrorCommand.class, out);
+        assertEquals(Parser.INVALID_EVENT_FORMAT_MESSAGE, out.toString());
+    }
+
+    @Test
+    void parse_eventValid_returnsEventCommand() {
+        TaskManager tm = newTaskManagerWithTasks(0);
+
+        Command out = Parser.parse("event party /from 2022-12-12 /to 2022-12-12", tm);
+
+        assertInstanceOf(EventCommand.class, out);
     }
 }

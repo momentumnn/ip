@@ -6,21 +6,19 @@ import thonk.core.TaskManager;
 import thonk.task.Task;
 
 /**
- * Represents a command which lists all tasks in the task list.
+ * Represents a command which finds a task in the task list.
  */
-public class ListCommand extends Command {
-    public ListCommand() {
+public class FindCommand extends Command {
+    private final String name;
+    public FindCommand(String name) {
+        this.name = name;
     }
 
     @Override
     public void execute(TaskManager tm) {
-        this.response = list(tm.getTasks());
+        this.response = list(tm.find(this.name));
     }
-    /**
-     * Prints the current list of tasks within pastTasks
-     * @param pastTasks ArrayList of tasks
-     */
-    public String list(ArrayList<Task> pastTasks) {
+    private String list(ArrayList<Task> pastTasks) {
         String output = "";
         if (pastTasks.isEmpty()) {
             output = "There are no past tasks";

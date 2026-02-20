@@ -3,6 +3,7 @@ package thonk.core;
 import java.io.IOException;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -26,9 +27,15 @@ public class Main extends Application {
             stage.setMinHeight(220);
             stage.setMinWidth(417);
             stage.setTitle("Thonk");
-            stage.setIconified(true);
             fxmlLoader.<MainWindow>getController().setThonk(thonk); //inject the Duke instance
             stage.show();
+            Platform.runLater(() -> {
+                stage.setAlwaysOnTop(true);
+                stage.toFront();
+                stage.requestFocus();
+                stage.setAlwaysOnTop(false);
+            });
+
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,8 +1,5 @@
 package thonk.command;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 import thonk.core.TaskManager;
 import thonk.core.Ui;
 import thonk.task.Event;

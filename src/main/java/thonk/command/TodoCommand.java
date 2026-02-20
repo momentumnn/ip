@@ -3,6 +3,9 @@ package thonk.command;
 import thonk.core.TaskManager;
 import thonk.core.Ui;
 import thonk.task.Todo;
+/**
+ * Represents a command which creates a todo task in the task list.
+ */
 
 public class TodoCommand extends Command {
     private final String taskName;

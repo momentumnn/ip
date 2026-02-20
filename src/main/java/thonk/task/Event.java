@@ -28,9 +28,8 @@ public class Event extends Task {
      * @param endTime End time of event, in dd-mm-yyyy
      */
     public Event(String description, boolean isDone, String startTime, String endTime) {
-        super(description, isDone);
-        this.startTime = stringToDate(startTime);
-        this.endTime = stringToDate(endTime);
+        this(description, startTime, endTime);
+        this.isDone = isDone;
     }
     private LocalDate stringToDate(String date) {
         return LocalDate.parse(date.trim());
