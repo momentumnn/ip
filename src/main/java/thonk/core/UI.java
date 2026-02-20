@@ -64,7 +64,7 @@ public class UI {
                 ArrayList<Task> matchingTasks = taskManager.find(matchingText);
                 return this.list(matchingTasks);
             default:
-                throw new ThonkException("U entered something wong");
+                throw new ThonkException("U entered something wrong");
             }
         } catch (Exception e) {
             return e.getMessage();

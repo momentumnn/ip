@@ -46,9 +46,13 @@ public class Storage {
         }
         try (Scanner scanner = new Scanner(file)) {
             while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                if (parseTaskFromFile(line) != null) {
-                    tasks.add(parseTaskFromFile(line));
+                String line = scanner.nextLine().trim();
+                if (line.isEmpty()) {
+                    continue;
+                }
+                Task parsed = parseTaskFromFile(line);
+                if (parsed != null) {
+                    tasks.add(parsed);
                 }
             }
         } catch (FileNotFoundException e) {
@@ -64,13 +68,10 @@ public class Storage {
     public void save(ArrayList<Task> tasks) {
         try {
             FileWriter file = new FileWriter(path);
-            tasks.forEach(task -> {
-                try {
-                    file.write(task.toSave(SPLITTING_CHAR) + "\n");
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            });
+            for (Task task : tasks) {
+                file.write(task.toSave(SPLITTING_CHAR));
+                file.write(System.lineSeparator());
+            }
             file.close();
         } catch (IOException e) {
             throw new RuntimeException(e);

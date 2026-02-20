@@ -12,7 +12,8 @@ import thonk.Todo;
  * Represents a parsing interface
  */
 public interface Parser {
-
+    static final String DEADLINELIMITER = "/by";
+    static final String EVENTLIMITER = "/from|/to";
     /**
      * Parses the string input of text and converts it into a pair variable of command and task
      * @param input String input of the text
@@ -47,13 +48,13 @@ public interface Parser {
         return new Todo(arg);
     }
     private static Deadline createDeadline(String arg) {
-        String[] taskDetails = arg.split("/by");
+        String[] taskDetails = arg.split(DEADLINELIMITER);
         String taskToAdd = taskDetails[0].trim();
         String taskEndTime = taskDetails[1].trim();
         return new Deadline(taskToAdd, taskEndTime);
     }
     private static Event createEvent(String arg) {
-        String[] taskDetails = arg.split("/from|/to");
+        String[] taskDetails = arg.split(EVENTLIMITER, 3);
         String taskToAdd = taskDetails[0].trim();
         String taskStartTime = taskDetails[1];
         String taskEndTime = taskDetails[2];

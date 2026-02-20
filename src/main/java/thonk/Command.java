@@ -34,7 +34,10 @@ public enum Command {
         if (isNullInput || isBlankInput) {
             return Command.UNKNOWN;
         }
+        return getCommand(input);
         // Split input to get the first word (the actual command)
+    }
+    private static Command getCommand(String input) {
         String firstWord = input.split(" ")[0].toLowerCase();
         for (Command cmd : Command.values()) {
             for (String key : cmd.keywords) {
