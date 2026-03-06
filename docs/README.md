@@ -1,8 +1,3 @@
----
-layout: page
-title: User Guide
----
-
 Thonk is a desktop app for managing contacts,
 * Table of Contents
 {:toc}
